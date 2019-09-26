@@ -17,8 +17,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LevelsActivity" />
-        <activity android:name=".GameActivity"></activity>
+        <activity android:name=".LevelsActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".GameActivity"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>
