@@ -2,40 +2,34 @@ package com.example.duckgame;
 
 import android.graphics.PointF;
 
-public class PlayerProjectile implements GameObject {
-    //for drawing
-    private PointF position;
-    private float rotation;
-    private float scale;
+public class PlayerProjectile extends GameObject {
 
     //for physics
     private float mass;
 
-    public boolean isDrawable(){return true;}
-
-    @Override
-    public PointF getPosition() {
-        return position;
-    }
-    public void setPosition(PointF pos){
-        position = pos;
-    }
-
-    @Override
-    public float getRotation() {
-        return rotation;
-    }
-    public void setRotation(float rot) {
-        rotation = rot;
-    }
-
-    @Override
-    public float getScale() {
-        return scale;
-    }
+    private PointF velocity;
+    private PointF force;
 
     @Override
     public String getShape() {
         return "CIRCLE";
+    }
+
+    public void addForce(PointF vector) {
+        force.x += vector.x;
+        force.y += vector.y;
+    }
+
+    public void calculateTrajectory(){
+        PointF pos = this.getPosition();
+        velocity.x += (force.x / mass);
+        velocity.y += (force.y / mass);
+        pos.x += velocity.x;
+        pos.y += velocity.y;
+    }
+
+    PlayerProjectile() {
+        velocity = new PointF(0,0);
+        force = new PointF(0, 0);
     }
 }

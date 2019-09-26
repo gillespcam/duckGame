@@ -2,16 +2,35 @@ package com.example.duckgame;
 
 import android.graphics.PointF;
 
-interface GameObject {
-    PointF getPosition();
-    void setPosition(PointF pos);
+abstract class GameObject {
+    //for drawing
+    private PointF position;
+    private float rotation;
+    private float scale;
 
-    float getRotation();
-    void setRotation(float rot);
 
-    float getScale();
+    public boolean isDrawable(){return true;}
 
-    boolean isDrawable();
+    public PointF getPosition() {
+        return position;
+    }
+    public void setPosition(PointF pos){
+        position = pos;
+    }
 
-    String getShape();
+    public float getRotation() {
+        return rotation;
+    }
+    public void setRotation(float rot) {
+        rotation = rot;
+    }
+
+    public float getScale() {
+        return scale;
+    }
+
+    public String getShape() {
+        return "CIRCLE";
+    }
+
 }
