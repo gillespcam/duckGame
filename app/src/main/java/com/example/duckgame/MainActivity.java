@@ -2,6 +2,7 @@ package com.example.duckgame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickButtonPlay(View view){
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
     }
 
     public void onClickButtonScores(View view){
