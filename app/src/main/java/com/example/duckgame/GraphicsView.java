@@ -1,9 +1,14 @@
 package com.example.duckgame;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.util.LinkedList;
@@ -12,22 +17,54 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     private final String TAG = "GraphicsView";
 
-    int screenWidth;
-    int screenHeight;
-    private LinkedList<GameObject> gameObjects = new LinkedList<>();
-    private GameThread game;
+    private int screenWidth;
+    private int screenHeight;
+    float scale; // How big one game unit is in terms of pixels
 
-    public GraphicsView (Context context, LinkedList<GameObject> gameObjects) {
+    private Paint paint;
+    private Matrix matrix = new Matrix();
+    private Bitmap bitmap;
+    private SparseArray<Bitmap> sprites; // Improves performance by loading all the resources outside the draw loop
+
+    private GameThread game;
+    private LinkedList<GameObject> gameObjects;
+    private PointF gameSize;
+
+    public GraphicsView (Context context, LinkedList<GameObject> levelObjects, PointF levelSize) {
         super(context);
+        gameObjects = levelObjects;
+        gameSize = levelSize;
+
         getHolder().addCallback(this);
-        game = new GameThread(getHolder(), this, gameObjects);
+        game = new GameThread(getHolder(), this, levelObjects, levelSize);
         setFocusable(true);
+
+        // Initialise the paint options
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+
+        // Load all the resources we'll need to be drawing
+        sprites = new SparseArray<>();
+        sprites.put(R.drawable.goal,  BitmapFactory.decodeResource(getResources(),R.drawable.goal));
+        sprites.put(R.drawable.player,  BitmapFactory.decodeResource(getResources(),R.drawable.player));
     }
 
-    public void draw(LinkedList<GameObject> gameObjects, PointF levelsize){
+    @Override
+    public void draw(Canvas canvas){
+        super.draw(canvas);
         this.gameObjects = gameObjects;
-        // Calculate multiplier for dimensions and positions of bitmaps based on screenWidth & screenHeight
-        //...
+
+        canvas.drawRect(5,5, scale * gameSize.x, scale * gameSize.y, paint);
+
+        // Draw GameWorld objects with updated positions, dimensions etc.
+        for (GameObject gameObject : gameObjects){
+            bitmap = sprites.get(gameObject.getSprite());
+            matrix.setRotate(gameObject.getRotation(),bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+            matrix.postTranslate(gameObject.getPosition().x - bitmap.getWidth() / 2, gameObject.getPosition().y - bitmap.getHeight() / 2);
+            canvas.drawBitmap(bitmap, matrix, paint);
+        }
     }
 
     @Override
@@ -40,8 +77,13 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        screenWidth = width;
-        screenHeight = height;
+        screenWidth = width - 10;
+        screenHeight = height - 10;
+
+        float xscale = screenWidth / gameSize.x;
+        float yscale = screenHeight / gameSize.y;
+
+        scale = (xscale < yscale) ? xscale : yscale;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.duckgame;
 
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -25,7 +26,7 @@ public class GameThread extends Thread {
 
     private GameWorld level;
 
-    public GameThread(SurfaceHolder surfaceHolder, GraphicsView graphicsView, LinkedList<GameObject> gameObjects){
+    public GameThread(SurfaceHolder surfaceHolder, GraphicsView graphicsView, LinkedList<GameObject> levelObjects, PointF levelSize){
         super();
         this.surfaceHolder = surfaceHolder;
         this.graphicsView = graphicsView;
