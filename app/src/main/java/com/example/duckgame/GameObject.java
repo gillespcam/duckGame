@@ -1,5 +1,6 @@
 package com.example.duckgame;
 
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 
 abstract class GameObject {
@@ -12,7 +13,9 @@ abstract class GameObject {
 
     protected GameWorld getParent(){return parent;}
 
-    public boolean isDrawable(){return true;}
+    public boolean isDrawable(){return false;}
+
+    public abstract int getSprite();
 
     public PointF getPosition() {
         return position;

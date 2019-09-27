@@ -10,8 +10,8 @@ public class GameWorld {
     private PointF size;
 
     // all the objects in the level
-    private LinkedList<GameObject> gameObjects;
-    private LinkedList<GameObject> activeObjects;
+    private LinkedList<GameObject> gameObjects = new LinkedList<GameObject>();
+    private LinkedList<GameObject> activeObjects = new LinkedList<GameObject>();
 
     public void doGameTick() {
         for(GameObject obj : activeObjects){
@@ -39,6 +39,16 @@ public class GameWorld {
     public void removeActiveObject(GameObject obj){
         gameObjects.remove(obj);
         activeObjects.remove(obj);
+    }
+
+    public PointF getSize() {
+        return size;
+    }
+
+    GameWorld(){
+        // initial size and objects, for testing
+        size = new PointF(10, 20);
+
     }
 
 }
