@@ -7,10 +7,10 @@
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:id="@+id/content"
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#2196F3">
+        android:background="@color/colorPrimary">
 
         <RelativeLayout
             android:layout_width="wrap_content"
