@@ -1,5 +1,6 @@
 package com.example.duckgame;
 
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -18,6 +19,7 @@ public class GameActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
         FrameLayout ContentView = findViewById(R.id.game);
         ContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -26,6 +28,9 @@ public class GameActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        ContentView.addView(new GraphicsView(this, new LinkedList<GameObject>()));
+        GraphicsView graphicsView = new GraphicsView(this, new LinkedList<GameObject>());
+        graphicsView.setZOrderOnTop(true);
+        graphicsView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        ContentView.addView(graphicsView);
     }
 }
