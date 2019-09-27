@@ -47,7 +47,7 @@ public class GameWorld {
 
     GameWorld(){
         // initial size and objects, for testing
-        size = new PointF(10, 20);
+        size = new PointF(16, 8);
 
     }
 
