@@ -7,7 +7,7 @@ abstract class GameObject {
     //for drawing
     protected PointF position;
     protected float rotation;
-    protected float scale;
+    protected float scale = 1;
 
     private GameWorld parent;
 

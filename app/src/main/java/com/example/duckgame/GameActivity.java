@@ -32,7 +32,7 @@ public class GameActivity extends AppCompatActivity {
 
         // Create new instance of GraphicsView with selected level loadout
         Log.i(TAG, "Creating graphicsView");
-        GraphicsView graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF());
+        GraphicsView graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF(16, 8));
         graphicsView.setZOrderOnTop(true);
         graphicsView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         // Add graphicsView to screen

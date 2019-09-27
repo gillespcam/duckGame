@@ -64,8 +64,14 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         // Draw GameWorld objects with updated positions, dimensions etc.
         for (GameObject gameObject : gameObjects){
             bitmap = sprites.get(gameObject.getSprite());
-            matrix.setRotate(gameObject.getRotation(),bitmap.getWidth() / 2, bitmap.getHeight() / 2);
-            matrix.postTranslate(gameObject.getPosition().x - bitmap.getWidth() / 2, gameObject.getPosition().y - bitmap.getHeight() / 2);
+            float sprW = bitmap.getWidth();
+            float spriteScale = gameObject.getScale() * scale / bitmap.getWidth();
+            PointF middleCoord = new PointF(bitmap.getWidth() / 2F, bitmap.getHeight() / 2F);
+            matrix.setRotate(gameObject.getRotation(), middleCoord.x, middleCoord.y );
+            matrix.postScale(spriteScale, spriteScale);
+            matrix.postTranslate(gameObject.getPosition().x * scale + 5 - middleCoord.x * spriteScale, gameObject.getPosition().y * scale + 5 - middleCoord.y * spriteScale);
+
+
             canvas.drawBitmap(bitmap, matrix, paint);
         }
     }

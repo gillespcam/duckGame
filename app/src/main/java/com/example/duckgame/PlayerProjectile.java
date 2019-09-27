@@ -10,10 +10,10 @@ public class PlayerProjectile extends GameObject {
 
     //for physics
     private float mass = 1;
-    private float bounciness = 0.8F;
+    private float bounciness = 0.6F;
 
-    private PointF velocity;
-    private PointF force;
+    private PointF velocity = new PointF(0, 0);
+    private PointF force = new PointF(0, 0);
 
     @Override
     public int getSprite() {
@@ -36,41 +36,50 @@ public class PlayerProjectile extends GameObject {
         velocity.y += (force.y / mass);
         force.x = 0;
         force.y = 0;
-        rotation = (float)Math.atan2(velocity.y, velocity.x);
+        rotation = (float)Math.toDegrees(Math.atan2(velocity.y, velocity.x));
         pos.x += velocity.x;
         pos.y += velocity.y;
     }
 
     PlayerProjectile(GameWorld p) {
         super(p);
-        velocity = new PointF(0,0);
-        force = new PointF(0, 0);
     }
 
     PlayerProjectile(GameWorld p, PointF vel) {
         super(p);
         velocity = vel;
-        force = new PointF(0, 0);
     }
 
     @Override
     public void doGameTick() {
-        boolean collision = false;
-        PointF closestPoint = null;
         LinkedList<GameObject> objs = this.getParent().getGameObjects();
 
+        calculateTrajectory();;
+
         //deal with collision against walls
-        if(position.x<=0){
-            velocity.x += Math.abs(velocity.x) * bounciness;
+        if(position.x - scale / 2 <= 0){
+            position.x = scale / 2;
+            velocity.x += 2 * Math.abs(velocity.x);
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
         }
-        if(position.x >= this.getParent().getSize().x){
-            velocity.x -= Math.abs(velocity.x) * bounciness;
+        if(position.x + scale / 2 >= this.getParent().getSize().x){
+            position.x = this.getParent().getSize().x - scale / 2;
+            velocity.x -= 2 * Math.abs(velocity.x);
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
         }
-        if(position.y<=0){
-            velocity.y += Math.abs(velocity.y) * bounciness;
+        if(position.y - scale / 2 <= 0){
+            position.y = scale / 2;
+            velocity.y += 2 * Math.abs(velocity.y);
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
         }
-        if(position.y >= this.getParent().getSize().y){
-            velocity.y -= Math.abs(velocity.y) * bounciness;
+        if(position.y + scale / 2 >= this.getParent().getSize().y){
+            position.y = this.getParent().getSize().y - scale / 2;
+            velocity.y -= 2 * Math.abs(velocity.y);
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
         }
 
 
@@ -88,9 +97,8 @@ public class PlayerProjectile extends GameObject {
                         //use the square of the distances, so we don't have to square root
                         float dsq = xdist * xdist + ydist * ydist;
                         // the sum of the radii of the circles: the minimum distance the circles can be apart without touching
-                        float sumrads = this.scale + objscale;
+                        float sumrads = (this.scale + objscale) / 2;
                         if(dsq < sumrads * sumrads){
-                            collision = true;
                             float velangle = (float)Math.atan2(velocity.y, velocity.x);
 
                             // angle from ball to object - normal to plane of reflection

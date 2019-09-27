@@ -31,6 +31,7 @@ public class GameThread extends Thread {
         this.surfaceHolder = surfaceHolder;
         this.graphicsView = graphicsView;
         //level = new GameWorld(levelObjects, levelSize);
+        level = new GameWorld(levelSize);
     }
 
     @Override
@@ -46,9 +47,9 @@ public class GameThread extends Thread {
                 framesSkipped++;
             }
 
-            //canvas = this.surfaceHolder.lockCanvas();
-            //level.draw();
-            //surfaceHolder.unlockCanvasAndPost(canvas);
+            canvas = this.surfaceHolder.lockCanvas();
+            level.draw(graphicsView, canvas);
+            surfaceHolder.unlockCanvasAndPost(canvas);
 
             deltaTime += System.nanoTime() - prevTime;
             Log.i(TAG, "deltaTime: " + deltaTime);
