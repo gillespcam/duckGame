@@ -3,11 +3,14 @@ package com.example.duckgame;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.util.LinkedList;
 
 public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback {
+
+    private final String TAG = "GraphicsView";
 
     int screenWidth;
     int screenHeight;
@@ -30,6 +33,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         // Commence game loop
+        Log.i(TAG, "Starting GameThread");
         game.setRunning(true);
         game.start();
     }
