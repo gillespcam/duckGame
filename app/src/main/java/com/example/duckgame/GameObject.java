@@ -1,15 +1,21 @@
 package com.example.duckgame;
 
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 
 abstract class GameObject {
     //for drawing
-    private PointF position;
-    private float rotation;
-    private float scale;
+    protected PointF position;
+    protected float rotation;
+    protected float scale;
 
+    private GameWorld parent;
 
-    public boolean isDrawable(){return true;}
+    protected GameWorld getParent(){return parent;}
+
+    public boolean isDrawable(){return false;}
+
+    public abstract int getSprite();
 
     public PointF getPosition() {
         return position;
@@ -31,6 +37,16 @@ abstract class GameObject {
 
     public String getShape() {
         return "CIRCLE";
+    }
+
+    public boolean projectileCollision() {return false;}
+
+    public void doGameTick(){
+        //by default, the object does nothing
+    }
+
+    public GameObject(GameWorld p) {
+        parent = p;
     }
 
 }
