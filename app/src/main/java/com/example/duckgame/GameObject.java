@@ -4,10 +4,13 @@ import android.graphics.PointF;
 
 abstract class GameObject {
     //for drawing
-    private PointF position;
-    private float rotation;
-    private float scale;
+    protected PointF position;
+    protected float rotation;
+    protected float scale;
 
+    private GameWorld parent;
+
+    protected GameWorld getParent(){return parent;}
 
     public boolean isDrawable(){return true;}
 
@@ -31,6 +34,16 @@ abstract class GameObject {
 
     public String getShape() {
         return "CIRCLE";
+    }
+
+    public boolean projectileCollision() {return false;}
+
+    public void doGameTick(){
+        //by default, the object does nothing
+    }
+
+    public GameObject(GameWorld p) {
+        parent = p;
     }
 
 }

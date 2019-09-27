@@ -9,6 +9,36 @@ public class GameWorld {
     // the dimensions of the level
     private PointF size;
 
+    // all the objects in the level
     private LinkedList<GameObject> gameObjects;
+    private LinkedList<GameObject> activeObjects;
+
+    public void doGameTick() {
+        for(GameObject obj : activeObjects){
+            obj.doGameTick();
+        }
+    }
+
+    public LinkedList<GameObject> getGameObjects(){
+        return gameObjects;
+    }
+
+    public void addObject(GameObject obj){
+        gameObjects.add(obj);
+    }
+
+    public void addActiveObject(GameObject obj){
+        gameObjects.add(obj);
+        activeObjects.add(obj);
+    }
+
+    public void removeObject(GameObject obj){
+        gameObjects.remove(obj);
+    }
+
+    public void removeActiveObject(GameObject obj){
+        gameObjects.remove(obj);
+        activeObjects.remove(obj);
+    }
 
 }
