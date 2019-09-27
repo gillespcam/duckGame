@@ -1,8 +1,6 @@
 package com.example.duckgame;
 
 import android.graphics.Canvas;
-import android.util.Log;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 
 import java.util.LinkedList;
@@ -11,14 +9,14 @@ public class GameThread extends Thread {
 
     private final double TICKRATE = 60; // Amount of times the game updates each second
     private final double TIME_PER_TICK = 1000000 / TICKRATE; // Amount of time between each update tick in nanoseconds
-    private final int MAX_FRAMESKIP = 10;
+    private final int MAX_FRAMESKIP = 10; // Maximum number of times for the game to skip drawing
 
     private SurfaceHolder surfaceHolder;
     private GraphicsView graphicsView;
     public static Canvas canvas;
 
     private boolean running;
-    private long prev; // Previous recorded time in nanoseconds
+    private long prevTime; // Previous recorded time in nanoseconds
     private long deltaTime; // Difference between previous recorded time and current time in nanoseconds
     private int framesSkipped; // Amount of drawing frames that have been skipped to update level objects
 
@@ -34,7 +32,7 @@ public class GameThread extends Thread {
     @Override
     public void run(){
         while (running){
-            prev = System.nanoTime();
+            prevTime = System.nanoTime();
             deltaTime = 0L;
 
             framesSkipped = 0;
@@ -48,7 +46,7 @@ public class GameThread extends Thread {
             //level.draw();
             //surfaceHolder.unlockCanvasAndPost(canvas);
 
-            deltaTime = System.nanoTime() - prev;
+            deltaTime += System.nanoTime() - prevTime;
         }
     }
 
