@@ -3,6 +3,7 @@ package com.example.duckgame;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import androidx.appcompat.app.ActionBar;
@@ -10,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.LinkedList;
 
 public class GameActivity extends AppCompatActivity {
+
+    private static final String TAG = "GameActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +31,13 @@ public class GameActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         // Create new instance of GraphicsView with selected level loadout
+        Log.i(TAG, "Creating graphicsView");
         GraphicsView graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF());
         graphicsView.setZOrderOnTop(true);
         graphicsView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         // Add graphicsView to screen
+        Log.i(TAG, "Adding graphicsView to screen");
         ContentView.addView(graphicsView);
+        Log.i(TAG, "graphicsView added to screen");
     }
 }

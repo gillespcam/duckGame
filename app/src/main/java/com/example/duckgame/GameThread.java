@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 public class GameThread extends Thread {
 
-    private final String TAG = "GameThread";
+    private static final String TAG = "GameThread";
 
     private final double TICKRATE = 60; // Amount of times the game updates each second
     private final double TIME_PER_TICK = 1000000 / TICKRATE; // Amount of time between each update tick in nanoseconds
@@ -30,14 +30,14 @@ public class GameThread extends Thread {
         super();
         this.surfaceHolder = surfaceHolder;
         this.graphicsView = graphicsView;
-        //level = new GameWorld(gameObjects);
+        //level = new GameWorld(levelObjects, levelSize);
     }
 
     @Override
     public void run(){
+        deltaTime = 0;
         while (running){
             prevTime = System.nanoTime();
-            deltaTime = 0;
 
             framesSkipped = 0;
             while (deltaTime >= TIME_PER_TICK && framesSkipped < MAX_FRAMESKIP){

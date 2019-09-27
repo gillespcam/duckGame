@@ -51,10 +51,13 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         sprites.put(R.drawable.player,  BitmapFactory.decodeResource(getResources(),R.drawable.player));
     }
 
+    public void setGameObjects(LinkedList<GameObject> gameObjects){
+        this.gameObjects = gameObjects;
+    }
+
     @Override
     public void draw(Canvas canvas){
         super.draw(canvas);
-        this.gameObjects = gameObjects;
 
         canvas.drawRect(5,5, scale * gameSize.x, scale * gameSize.y, paint);
 
@@ -95,9 +98,10 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
                 game.setRunning(false);
                 game.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
             retry = false;
+            Log.i(TAG, "Terminating GameThread");
         }
     }
 }
