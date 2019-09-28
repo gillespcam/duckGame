@@ -46,7 +46,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
-        // bring up the pause menu
+        graphicsView.getGameThread().pauseGame();
     }
 
     @Override

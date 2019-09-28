@@ -47,7 +47,7 @@ public class GameThread extends Thread {
                to pass for an update loop, until the number of drawing frames skipped exceeds a set value. */
             while (deltaTime >= TIME_PER_TICK && framesSkipped < MAX_FRAMESKIP){
                 // Update all active objects on the level
-                level.tick((double)deltaTime);
+                level.tick(deltaTime);
                 deltaTime -= TIME_PER_TICK;
                 framesSkipped++;
             }
