@@ -1,5 +1,6 @@
 package com.example.duckgame;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.View;
@@ -40,7 +41,8 @@ public class LevelsActivity extends AppCompatActivity {
         OnItemClickListener onItemClickListener = new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int i, long l) {
-
+                Intent intent = new Intent(parent.getContext(), GameActivity.class);
+                intent.putExtra("id", i);
             }
         };
 

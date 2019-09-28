@@ -1,5 +1,6 @@
 package com.example.duckgame;
 
+import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -32,18 +33,17 @@ public class GameActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        // Create new instance of GraphicsView with selected level specifications
-        // temp level size
-        PointF tempsize = new PointF(16, 8);
+        // Create LevelData for current game
+        TypedArray levels = getResources().obtainTypedArray(R.array.levels);
+        // Get the TypedArray for the chosen level
+        TypedArray levelData = getResources().obtainTypedArray(levels.getResourceId(getIntent().getIntExtra("id", 0),0));
+        LevelBlueprint levelBlueprint = new LevelBlueprint(levelData);
 
-        Log.i(TAG, "Creating graphicsView");
-        graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), tempsize);
+        // Create new instance of GraphicsView with selected level specifications
+        graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF(16, 8));
         graphicsView.setZOrderOnTop(true);
         graphicsView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        // Add graphicsView to screen
-        Log.i(TAG, "Adding graphicsView to screen");
         ContentView.addView(graphicsView);
-        Log.i(TAG, "graphicsView added to screen");
     }
 
     @Override
