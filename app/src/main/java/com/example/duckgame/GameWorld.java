@@ -20,7 +20,7 @@ public class GameWorld {
         size = levelSize;
 
         // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
-        addActiveObject(new PlayerProjectile(this, R.drawable.player, new PointF( 1F, 4F), 0, 1, new PointF(0.2F,0.1F)));
+        addActiveObject(new PlayerProjectile(this, R.drawable.player, new PointF( 3F, 4F), 0, 1, new PointF(1F,1F)));
     }
 
     public void tick(double deltaTime) {

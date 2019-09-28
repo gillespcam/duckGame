@@ -55,10 +55,6 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     @Override
     public void draw(Canvas canvas){
-        if (canvas == null) {
-            Log.i(TAG, "ERROR: Null canvas");
-            return;
-        }
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         super.draw(canvas);
 
