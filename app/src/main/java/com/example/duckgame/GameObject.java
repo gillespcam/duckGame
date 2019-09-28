@@ -41,7 +41,7 @@ abstract class GameObject {
 
     public boolean projectileCollision() {return false;}
 
-    public void doGameTick(){
+    public void doGameTick(float deltat){
         //by default, the object does nothing
     }
 

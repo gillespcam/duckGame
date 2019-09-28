@@ -48,7 +48,7 @@ public class GameThread extends Thread {
             }
 
             canvas = this.surfaceHolder.lockCanvas();
-            level.draw(graphicsView, canvas);
+            level.draw(graphicsView, canvas, (float)deltaTime);
             surfaceHolder.unlockCanvasAndPost(canvas);
 
             deltaTime += System.nanoTime() - prevTime;

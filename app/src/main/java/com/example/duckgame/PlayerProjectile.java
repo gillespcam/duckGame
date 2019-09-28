@@ -30,15 +30,15 @@ public class PlayerProjectile extends GameObject {
         force.y += vector.y;
     }
 
-    public void calculateTrajectory(){
+    public void calculateTrajectory(float deltat){
         PointF pos = this.getPosition();
-        velocity.x += (force.x / mass);
-        velocity.y += (force.y / mass);
+        velocity.x += (force.x / mass) * deltat;
+        velocity.y += (force.y / mass) * deltat;
         force.x = 0;
         force.y = 0;
         rotation = (float)Math.toDegrees(Math.atan2(velocity.y, velocity.x));
-        pos.x += velocity.x;
-        pos.y += velocity.y;
+        pos.x += velocity.x * deltat;
+        pos.y += velocity.y * deltat;
     }
 
     PlayerProjectile(GameWorld p) {
@@ -51,10 +51,10 @@ public class PlayerProjectile extends GameObject {
     }
 
     @Override
-    public void doGameTick() {
+    public void doGameTick(float deltat) {
         LinkedList<GameObject> objs = this.getParent().getGameObjects();
 
-        calculateTrajectory();;
+        calculateTrajectory(deltat);;
 
         //deal with collision against walls
         if(position.x - scale / 2 <= 0){

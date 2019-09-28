@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -57,9 +59,14 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     @Override
     public void draw(Canvas canvas){
+        if (canvas == null) {
+            Log.i(TAG, "ERROR: Null canvas");
+            return;
+        }
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         super.draw(canvas);
 
-        canvas.drawRect(5,5, scale * gameSize.x, scale * gameSize.y, paint);
+        //canvas.drawRect(5,5, scale * gameSize.x, scale * gameSize.y, paint);
 
         // Draw GameWorld objects with updated positions, dimensions etc.
         for (GameObject gameObject : gameObjects){

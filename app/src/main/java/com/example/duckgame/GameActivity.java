@@ -40,4 +40,10 @@ public class GameActivity extends AppCompatActivity {
         ContentView.addView(graphicsView);
         Log.i(TAG, "graphicsView added to screen");
     }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("CDA", "onBackPressed Called");
+        // bring up the pause menu
+    }
 }
