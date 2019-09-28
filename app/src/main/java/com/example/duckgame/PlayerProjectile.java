@@ -7,7 +7,8 @@ import java.util.LinkedList;
 public class PlayerProjectile extends GameObject {
 
     private float mass = 1; // How much forces affect the change in velocity of the projectile
-    private float bounciness = 0.6F; // Fraction of speed the projectile conserves after a bounce collision
+    private float bounciness = 1F; // Fraction of speed the projectile conserves after a bounce collision
+    private float friction = -0.1F;
     private PointF force = new PointF(0, 0); // Net force acting on projectile
     private PointF velocity = new PointF(0, 0); // Current velocity of projectile
 
@@ -34,6 +35,7 @@ public class PlayerProjectile extends GameObject {
     }
 
     public void calculateTrajectory(double deltaTime){
+        addForce(new PointF(velocity.x * friction, velocity.y * friction));
         velocity.x += (force.x / mass) * deltaTime;
         velocity.y += (force.y / mass) * deltaTime;
         force.x = 0;
