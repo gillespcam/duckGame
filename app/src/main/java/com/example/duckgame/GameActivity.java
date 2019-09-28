@@ -14,6 +14,8 @@ public class GameActivity extends AppCompatActivity {
 
     private static final String TAG = "GameActivity";
 
+    private GraphicsView graphicsView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +34,7 @@ public class GameActivity extends AppCompatActivity {
 
         // Create new instance of GraphicsView with selected level specifications
         Log.i(TAG, "Creating graphicsView");
-        GraphicsView graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF());
+        graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF());
         graphicsView.setZOrderOnTop(true);
         graphicsView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         // Add graphicsView to screen
@@ -45,5 +47,17 @@ public class GameActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
         // bring up the pause menu
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        graphicsView.getGameThread().pauseGame();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        graphicsView.getGameThread().resumeGame();
     }
 }

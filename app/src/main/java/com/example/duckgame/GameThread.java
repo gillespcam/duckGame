@@ -22,7 +22,7 @@ public class GameThread extends Thread {
     private boolean running;
     private boolean paused;
     private long prevTime; // Previous recorded time in nanoseconds
-    private double deltaTime; // Difference between previous recorded time and current time in nanoseconds
+    private long deltaTime; // Difference between previous recorded time and current time in nanoseconds
     private int framesSkipped; // Amount of drawing frames that have been skipped to update level objects
 
     private GameWorld level;
@@ -37,6 +37,7 @@ public class GameThread extends Thread {
 
     @Override
     public void run(){
+        paused = false;
         deltaTime = 0;
         while (running){
             prevTime = System.nanoTime();
@@ -46,7 +47,7 @@ public class GameThread extends Thread {
                to pass for an update loop, until the number of drawing frames skipped exceeds a set value. */
             while (deltaTime >= TIME_PER_TICK && framesSkipped < MAX_FRAMESKIP){
                 // Update all active objects on the level
-                level.tick(deltaTime / 1000000000);
+                level.tick(deltaTime);
                 deltaTime -= TIME_PER_TICK;
                 framesSkipped++;
             }
@@ -56,10 +57,15 @@ public class GameThread extends Thread {
             level.draw(graphicsView, canvas);
             surfaceHolder.unlockCanvasAndPost(canvas);
 
-            if (!paused) deltaTime += System.nanoTime() - prevTime;
-            Log.i(TAG, "deltaTime: " + deltaTime);
+            if (!paused) {
+                deltaTime += System.nanoTime() - prevTime;
+                Log.i(TAG, "deltaTime: " + deltaTime);
+            }
         }
     }
+
+    public void pauseGame(){paused = true;}
+    public void resumeGame(){paused = false;}
 
     /** Properties **/
 

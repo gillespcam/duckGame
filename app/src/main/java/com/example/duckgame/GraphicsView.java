@@ -116,6 +116,9 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     /** Properties **/
 
+    public GameThread getGameThread(){
+        return game;
+    }
     public void setGameObjects(LinkedList<GameObject> gameObjects){
         this.gameObjects = gameObjects;
     }

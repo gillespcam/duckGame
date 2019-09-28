@@ -7,8 +7,8 @@ import java.util.LinkedList;
 
 public class GameWorld {
 
-    private LinkedList<GameObject> Objects = new LinkedList<>(); // All the objects in the level
-    private LinkedList<GameObject> activeObjects = new LinkedList<>(); // All objects that need updating
+    private LinkedList<GameObject> Objects; // All the objects in the level
+    private LinkedList<GameObject> activeObjects; // All objects that need updating
     private PointF size; // The dimensions of the level in game units
 
     GameWorld(LinkedList<GameObject> levelObjects, PointF levelSize) {
@@ -25,6 +25,7 @@ public class GameWorld {
     }
 
     public void tick(double deltaTime) {
+        deltaTime /= 1000000000; // Convert deltaTime from nanoseconds to seconds
         for(GameObject obj : activeObjects){
             obj.tick(deltaTime);
         }
