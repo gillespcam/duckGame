@@ -11,11 +11,13 @@ import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.util.LinkedList;
 
 public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback {
+
 
     private final String TAG = "GraphicsView";
 
@@ -31,6 +33,8 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
     private GameThread game;
     private LinkedList<GameObject> gameObjects;
     private PointF gameSize;
+
+    private int launchMotion = -1; // -1 means no launch motion has been initiated
 
     GraphicsView (Context context, LinkedList<GameObject> levelObjects, PointF levelSize) {
         super(context);
@@ -107,6 +111,39 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             retry = false;
             Log.i(TAG, "Terminating GameThread");
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            // if we're not paused or launched, we can start the launch procedure
+            if(!game.getPaused() && !game.getLaunched()){
+                // no launch motion currently in progress
+                if(launchMotion == -1) {
+                    launchMotion = event.getPointerId(0);
+                }
+            }
+        } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
+            // if we currently have a launch motion in progress
+            if(launchMotion != -1){
+                int pointer = event.findPointerIndex(launchMotion);
+                float aimx = event.getX(pointer);
+                float aimy = event.getY(pointer);
+                PointF aimGamePoint = new PointF(aimx / scale, aimy / scale);
+                game.aimPlayer(aimGamePoint);
+            }
+        } else if(event.getAction() == MotionEvent.ACTION_UP) {
+            // if we currently have a launch motion in progress
+            if(launchMotion != -1){
+                int pointer = event.findPointerIndex(launchMotion);
+                float launchx = event.getX(pointer);
+                float launchy = event.getY(pointer);
+                launchMotion = -1; // we no longer need the pointer
+                PointF launchGamePoint = new PointF(launchx / scale, launchy / scale);
+                game.launchPlayer(launchGamePoint);
+            }
+        }
+        return true;
     }
 
     /** Properties **/

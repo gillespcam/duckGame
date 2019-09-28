@@ -4,11 +4,14 @@ import android.graphics.PointF;
 
 import java.util.LinkedList;
 
-public class PlayerProjectile extends GameObject {
+public class Player extends GameObject {
+
+    private boolean launched = false;
 
     private float mass = 1; // How much forces affect the change in velocity of the projectile
-    private float bounciness = 1F; // Fraction of speed the projectile conserves after a bounce collision
-    private float friction = -0.1F;
+    private float bounciness = 0.7F; // Fraction of speed the projectile conserves after a bounce collision
+    private float friction = -0.2F;
+    private float launchSpeed = 1F;
     private PointF force = new PointF(0, 0); // Net force acting on projectile
     private PointF velocity = new PointF(0, 0); // Current velocity of projectile
 
@@ -19,14 +22,38 @@ public class PlayerProjectile extends GameObject {
         return "CIRCLE";
     }
 
-    PlayerProjectile(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
+    Player(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
         super(parent, sprite, position, rotation, scale);
     }
 
     // Initialises projectile with initial velocity. For testing purposes only
-    PlayerProjectile(GameWorld parent, int sprite, PointF position, float rotation, float scale, PointF velocity) {
+    Player(GameWorld parent, int sprite, PointF position, float rotation, float scale, PointF velocity) {
         super(parent, sprite, position, rotation, scale);
         this.velocity = velocity;
+
+    }
+
+    @Override
+    public void tick(double deltaTime) {
+        if(launched){
+            calculateTrajectory(deltaTime);
+            boundaryCollision();
+            objectCollion();
+        } else {
+            // look towards player touch
+
+        }
+    }
+
+    public void aimTouch(PointF coords) {
+        rotation = (float) Math.toDegrees(Math.atan2((coords.y - position.y), (coords.x - position.x)));
+    }
+
+    public void launch(PointF coords){
+
+        velocity.x = (coords.x - position.x) * launchSpeed;
+        velocity.y = (coords.y - position.y) * launchSpeed;
+        launched = true;
     }
 
     public void addForce(PointF vector) {
@@ -34,7 +61,7 @@ public class PlayerProjectile extends GameObject {
         force.y += vector.y;
     }
 
-    public void calculateTrajectory(double deltaTime){
+    private void calculateTrajectory(double deltaTime){
         addForce(new PointF(velocity.x * friction, velocity.y * friction));
         velocity.x += (force.x / mass) * deltaTime;
         velocity.y += (force.y / mass) * deltaTime;
@@ -45,10 +72,7 @@ public class PlayerProjectile extends GameObject {
         position.y += velocity.y * deltaTime;
     }
 
-    @Override
-    public void tick(double deltaTime) {
-        calculateTrajectory(deltaTime);
-
+    private void boundaryCollision(){
         //deal with collision against walls
         if(position.x - scale / 2 <= 0){
             position.x = scale / 2;
@@ -74,7 +98,9 @@ public class PlayerProjectile extends GameObject {
             velocity.x *= bounciness;
             velocity.y *= bounciness;
         }
+    }
 
+    private void objectCollion(){
         LinkedList<GameObject> objs = parent.getObjects();
         for(GameObject obj : objs) {
             // If the projectile bounces off the object, handle that, otherwise ignore this object

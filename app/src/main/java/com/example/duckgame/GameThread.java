@@ -21,6 +21,7 @@ public class GameThread extends Thread {
 
     private boolean running;
     private boolean paused;
+    private boolean launched = false;
     private long prevTime; // Previous recorded time in nanoseconds
     private long deltaTime; // Difference between previous recorded time and current time in nanoseconds
     private int framesSkipped; // Amount of drawing frames that have been skipped to update level objects
@@ -73,6 +74,15 @@ public class GameThread extends Thread {
     public void pauseGame(){paused = true;}
     public void resumeGame(){paused = false;}
 
+    public void launchPlayer(PointF coords){
+        launched = true;
+        level.launchPlayer(coords);
+    }
+
+    public void aimPlayer(PointF coords){
+        level.aimPlayer(coords);
+    }
+
     /** Properties **/
 
     public void setRunning(boolean running){
@@ -81,4 +91,5 @@ public class GameThread extends Thread {
     public boolean getPaused(){
         return paused;
     }
+    public boolean getLaunched(){ return launched;}
 }
