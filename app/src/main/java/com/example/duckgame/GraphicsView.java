@@ -50,6 +50,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         paint.setAntiAlias(true);
         paint.setFilterBitmap(true);
         paint.setDither(true);
+        paint.setColor(R.color.colorWater);
 
         // Load all the resources we'll need to be drawing
         sprites = new SparseArray<>();
@@ -62,7 +63,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         super.draw(canvas);
 
-        //canvas.drawRect(5,5, scale * gameSize.x, scale * gameSize.y, paint);
+        canvas.drawRect(5,5, scale * gameSize.x, scale * gameSize.y, paint);
 
         // Draw GameWorld objects with updated positions, dimensions etc.
         for (GameObject gameObject : gameObjects){
