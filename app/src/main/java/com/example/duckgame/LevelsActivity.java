@@ -25,7 +25,7 @@ public class LevelsActivity extends AppCompatActivity {
         // Enable Fullscreen
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-        FrameLayout ContentView = findViewById(R.id.game);
+        FrameLayout ContentView = findViewById(R.id.levels);
         ContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -43,6 +43,7 @@ public class LevelsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View v, int i, long l) {
                 Intent intent = new Intent(parent.getContext(), GameActivity.class);
                 intent.putExtra("id", i);
+                startActivity(intent);
             }
         };
 
