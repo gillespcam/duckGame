@@ -14,6 +14,9 @@ import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import androidx.core.content.ContextCompat;
+
 import java.util.LinkedList;
 
 public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback {
@@ -50,7 +53,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         paint.setAntiAlias(true);
         paint.setFilterBitmap(true);
         paint.setDither(true);
-        paint.setColor(R.color.colorWater);
+        paint.setColor(ContextCompat.getColor(context, R.color.colorWater));
 
         // Load all the resources we'll need to be drawing
         sprites = new SparseArray<>();
@@ -63,7 +66,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         super.draw(canvas);
 
-        canvas.drawRect(5,5, scale * gameSize.x, scale * gameSize.y, paint);
+        canvas.drawRect(20,20, scale * gameSize.x + 20, scale * gameSize.y + 20, paint);
 
         // Draw GameWorld objects with updated positions, dimensions etc.
         for (GameObject gameObject : gameObjects){
@@ -72,7 +75,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             PointF middleCoord = new PointF(bitmap.getWidth() / 2F, bitmap.getHeight() / 2F);
             matrix.setRotate(gameObject.getRotation(), middleCoord.x, middleCoord.y );
             matrix.postScale(spriteScale, spriteScale);
-            matrix.postTranslate(gameObject.getPosition().x * scale + 5 - middleCoord.x * spriteScale, gameObject.getPosition().y * scale + 5 - middleCoord.y * spriteScale);
+            matrix.postTranslate(gameObject.getPosition().x * scale + 20 - middleCoord.x * spriteScale, gameObject.getPosition().y * scale + 20 - middleCoord.y * spriteScale);
 
 
             canvas.drawBitmap(bitmap, matrix, paint);
@@ -89,8 +92,8 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        screenWidth = width - 10;
-        screenHeight = height - 10;
+        screenWidth = width - 40;
+        screenHeight = height - 40;
 
         float xscale = screenWidth / gameSize.x;
         float yscale = screenHeight / gameSize.y;
