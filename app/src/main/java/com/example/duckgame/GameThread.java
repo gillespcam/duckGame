@@ -12,7 +12,7 @@ public class GameThread extends Thread {
     private static final String TAG = "GameThread";
 
     private final double TICKRATE = 60; // Amount of times the game updates each second
-    private final double TIME_PER_TICK = 1000000 / TICKRATE; // Amount of time between each update tick in nanoseconds
+    private final double TIME_PER_TICK = 1000000000 / TICKRATE; // Amount of time between each update tick in nanoseconds
     private final int MAX_FRAMESKIP = 10; // Maximum number of times for the game to skip drawing
 
     private SurfaceHolder surfaceHolder;
@@ -50,6 +50,7 @@ public class GameThread extends Thread {
                 level.tick(deltaTime);
                 deltaTime -= TIME_PER_TICK;
                 framesSkipped++;
+                Log.i(TAG, "Executed Tick");
             }
 
             // Draw all objects on the level
