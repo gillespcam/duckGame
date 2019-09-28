@@ -33,8 +33,11 @@ public class GameActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         // Create new instance of GraphicsView with selected level specifications
+        // temp level size
+        PointF tempsize = new PointF(16, 8);
+
         Log.i(TAG, "Creating graphicsView");
-        graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF());
+        graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), tempsize);
         graphicsView.setZOrderOnTop(true);
         graphicsView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         // Add graphicsView to screen

@@ -17,9 +17,10 @@ public class GameWorld {
         // i.e. objects that change position, rotation, scale, sprite,
         // or objects with their own collision checking
         activeObjects = levelObjects;
+        size = levelSize;
 
         // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
-        size = new PointF(16, 8);
+
         addActiveObject(new PlayerProjectile(this, R.drawable.player, new PointF( 1F, 4F), 0, 1, new PointF(0.2F,0.1F)));
     }
 
