@@ -37,6 +37,9 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
     private LinkedList<GameObject> gameObjects;
     private PointF gameSize;
 
+    private int pixmargin = 20;
+    private PointF offset = new PointF(0,0);
+
     private int launchMotion = -1; // -1 means no launch motion has been initiated
 
     GraphicsView (Context context, LinkedList<GameObject> levelObjects, PointF levelSize) {
@@ -66,7 +69,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         super.draw(canvas);
 
-        canvas.drawRect(20,20, scale * gameSize.x + 20, scale * gameSize.y + 20, paint);
+        canvas.drawRect(offset.x, offset.y, scale * gameSize.x + offset.x, scale * gameSize.y + offset.y, paint);
 
         // Draw GameWorld objects with updated positions, dimensions etc.
         for (GameObject gameObject : gameObjects){
@@ -75,7 +78,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             PointF middleCoord = new PointF(bitmap.getWidth() / 2F, bitmap.getHeight() / 2F);
             matrix.setRotate(gameObject.getRotation(), middleCoord.x, middleCoord.y );
             matrix.postScale(spriteScale, spriteScale);
-            matrix.postTranslate(gameObject.getPosition().x * scale + 20 - middleCoord.x * spriteScale, gameObject.getPosition().y * scale + 20 - middleCoord.y * spriteScale);
+            matrix.postTranslate(gameObject.getPosition().x * scale + offset.x - middleCoord.x * spriteScale, gameObject.getPosition().y * scale + offset.y - middleCoord.y * spriteScale);
 
 
             canvas.drawBitmap(bitmap, matrix, paint);
@@ -92,13 +95,21 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        screenWidth = width - 40;
-        screenHeight = height - 40;
+        screenWidth = width - 2 * pixmargin;
+        screenHeight = height - 2 * pixmargin;
 
         float xscale = screenWidth / gameSize.x;
         float yscale = screenHeight / gameSize.y;
 
-        scale = (xscale < yscale) ? xscale : yscale;
+        if(xscale < yscale){
+            scale = xscale;
+            offset.y = (screenHeight - gameSize.y * xscale) / 2 + pixmargin;
+            offset.x = pixmargin;
+        } else {
+            scale = yscale;
+            offset.x = (screenWidth - gameSize.x * yscale) / 2 + pixmargin;
+            offset.y = pixmargin;
+        }
     }
 
     @Override
