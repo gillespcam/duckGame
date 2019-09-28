@@ -1,6 +1,7 @@
 package com.example.duckgame;
 
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.PointF;
 
 import java.util.LinkedList;
@@ -10,6 +11,7 @@ public class GameWorld {
     private LinkedList<GameObject> Objects; // All the objects in the level
     private LinkedList<GameObject> activeObjects; // All objects that need updating
     private PointF size; // The dimensions of the level in game units
+    private Player playerObject;
 
     GameWorld(LinkedList<GameObject> levelObjects, PointF levelSize) {
         Objects = levelObjects;
@@ -20,7 +22,15 @@ public class GameWorld {
         size = levelSize;
 
         // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
-        addActiveObject(new PlayerProjectile(this, R.drawable.player, new PointF( 2F, 4F), 0, 1, new PointF(3F,3F)));
+        addPlayerObject(new Player(this, R.drawable.player, new PointF( 2F, 4F), 0, 1, new PointF(3F,3F)));
+    }
+
+    public void launchPlayer(PointF coords){
+        playerObject.launch(coords);
+    }
+
+    public void aimPlayer(PointF coords){
+        playerObject.aimTouch(coords);
     }
 
     public void tick(double deltaTime) {
@@ -42,6 +52,12 @@ public class GameWorld {
     public void addActiveObject(GameObject obj) {
         Objects.add(obj);
         activeObjects.add(obj);
+    }
+
+    public void addPlayerObject(Player obj) {
+        Objects.add(obj);
+        activeObjects.add(obj);
+        playerObject = obj;
     }
 
     public void removeObject(GameObject obj) {
