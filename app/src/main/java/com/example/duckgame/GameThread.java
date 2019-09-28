@@ -54,9 +54,14 @@ public class GameThread extends Thread {
             }
 
             // Draw all objects on the level
-            canvas = this.surfaceHolder.lockCanvas();
-            level.draw(graphicsView, canvas);
-            surfaceHolder.unlockCanvasAndPost(canvas);
+            try {
+                canvas = this.surfaceHolder.lockCanvas();
+                if (canvas == null) break;
+                level.draw(graphicsView, canvas);
+                surfaceHolder.unlockCanvasAndPost(canvas);
+            } catch (IllegalArgumentException e) {
+                break;
+            }
 
             if (!paused) {
                 deltaTime += System.nanoTime() - prevTime;
