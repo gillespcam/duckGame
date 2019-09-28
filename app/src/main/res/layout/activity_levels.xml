@@ -10,6 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/levels"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/LevelList"/>
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

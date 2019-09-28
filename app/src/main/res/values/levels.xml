@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="level_names">
+        <item>"Level 1"</item>
+    </string-array>
+    <array name="levels">
+        <item>@array/level_1</item>
+    </array>
+
+    <!-- LEVEL 1 -->
+
+    <array name="level_1_types">
+        <item>Player</item>
+    </array>
+    <array name="level_1_sprites">
+        <item>@drawable/player</item>
+    </array>
+    <array name="level_1_xpositions">
+        <item>2</item>
+    </array>
+    <array name="level_1_ypositions">
+        <item>4</item>
+    </array>
+    <array name="level_1_rotations">
+        <item>0</item>
+    </array>
+    <array name="level_1_scales">
+        <item>1</item>
+    </array>
+    <array name="level_1_objects">
+        <item>@array/level_1_types</item>
+        <item>@array/level_1_sprites</item>
+        <item>@array/level_1_xpositions</item>
+        <item>@array/level_1_ypositions</item>
+        <item>@array/level_1_rotations</item>
+        <item>@array/level_1_scales</item>
+    </array>
+    <array name="level_1_size">
+        <item>16</item>
+        <item>8</item>
+    </array>
+    <array name="level_1">
+        <item>@array/level_1_objects</item>
+        <item>@array/level_1_size</item>
+    </array>
+
+</resources>
