@@ -30,9 +30,9 @@ public class GameActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        // Create new instance of GraphicsView with selected level loadout
+        // Create new instance of GraphicsView with selected level specifications
         Log.i(TAG, "Creating graphicsView");
-        GraphicsView graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF(16, 8));
+        GraphicsView graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF());
         graphicsView.setZOrderOnTop(true);
         graphicsView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         // Add graphicsView to screen

@@ -32,7 +32,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
     private LinkedList<GameObject> gameObjects;
     private PointF gameSize;
 
-    public GraphicsView (Context context, LinkedList<GameObject> levelObjects, PointF levelSize) {
+    GraphicsView (Context context, LinkedList<GameObject> levelObjects, PointF levelSize) {
         super(context);
         gameObjects = levelObjects;
         gameSize = levelSize;
@@ -51,10 +51,6 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         sprites = new SparseArray<>();
         sprites.put(R.drawable.goal,  BitmapFactory.decodeResource(getResources(),R.drawable.goal));
         sprites.put(R.drawable.player,  BitmapFactory.decodeResource(getResources(),R.drawable.player));
-    }
-
-    public void setGameObjects(LinkedList<GameObject> gameObjects){
-        this.gameObjects = gameObjects;
     }
 
     @Override
@@ -116,5 +112,11 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             retry = false;
             Log.i(TAG, "Terminating GameThread");
         }
+    }
+
+    /** Properties **/
+
+    public void setGameObjects(LinkedList<GameObject> gameObjects){
+        this.gameObjects = gameObjects;
     }
 }

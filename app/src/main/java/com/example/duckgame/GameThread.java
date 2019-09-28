@@ -20,18 +20,19 @@ public class GameThread extends Thread {
     public static Canvas canvas;
 
     private boolean running;
+    private boolean paused;
     private long prevTime; // Previous recorded time in nanoseconds
     private double deltaTime; // Difference between previous recorded time and current time in nanoseconds
     private int framesSkipped; // Amount of drawing frames that have been skipped to update level objects
 
     private GameWorld level;
 
-    public GameThread(SurfaceHolder surfaceHolder, GraphicsView graphicsView, LinkedList<GameObject> levelObjects, PointF levelSize){
+    GameThread(SurfaceHolder surfaceHolder, GraphicsView graphicsView, LinkedList<GameObject> levelObjects, PointF levelSize){
         super();
         this.surfaceHolder = surfaceHolder;
         this.graphicsView = graphicsView;
-        //level = new GameWorld(levelObjects, levelSize);
-        level = new GameWorld(levelSize);
+        // Create new world using given specifications by levelsActivity
+        level = new GameWorld(levelObjects, levelSize);
     }
 
     @Override
@@ -41,20 +42,26 @@ public class GameThread extends Thread {
             prevTime = System.nanoTime();
 
             framesSkipped = 0;
+            /* Keep updating active objects as long as the time passed since the last cycle exceeds the time needed
+               to pass for an update loop, until the number of drawing frames skipped exceeds a set value. */
             while (deltaTime >= TIME_PER_TICK && framesSkipped < MAX_FRAMESKIP){
-                //level.update(deltaTime);
+                // Update all active objects on the level
+                level.tick(deltaTime / 1000000000);
                 deltaTime -= TIME_PER_TICK;
                 framesSkipped++;
             }
 
+            // Draw all objects on the level
             canvas = this.surfaceHolder.lockCanvas();
-            level.draw(graphicsView, canvas, (float)deltaTime);
+            level.draw(graphicsView, canvas);
             surfaceHolder.unlockCanvasAndPost(canvas);
 
-            deltaTime += System.nanoTime() - prevTime;
+            if (!paused) deltaTime += System.nanoTime() - prevTime;
             Log.i(TAG, "deltaTime: " + deltaTime);
         }
     }
+
+    /** Properties **/
 
     public void setRunning(boolean running){
         this.running = running;

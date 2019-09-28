@@ -1,28 +1,31 @@
 package com.example.duckgame;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 
 import java.util.LinkedList;
 
 public class PlayerProjectile extends GameObject {
 
-    //for physics
-    private float mass = 1;
-    private float bounciness = 0.6F;
+    private float mass = 1; // How much forces affect the change in velocity of the projectile
+    private float bounciness = 0.6F; // Fraction of speed the projectile conserves after a bounce collision
+    private PointF force = new PointF(0, 0); // Net force acting on projectile
+    private PointF velocity = new PointF(0, 0); // Current velocity of projectile
 
-    private PointF velocity = new PointF(0, 0);
-    private PointF force = new PointF(0, 0);
-
-    @Override
-    public int getSprite() {
-        return R.drawable.player;
+    public boolean isColliding(GameObject object) {
+        return false;
     }
-
-    @Override
     public String getShape() {
         return "CIRCLE";
+    }
+
+    PlayerProjectile(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
+        super(parent, sprite, position, rotation, scale);
+    }
+
+    // Initialises projectile with initial velocity. For testing purposes only
+    PlayerProjectile(GameWorld parent, int sprite, PointF position, float rotation, float scale, PointF velocity) {
+        super(parent, sprite, position, rotation, scale);
+        this.velocity = velocity;
     }
 
     public void addForce(PointF vector) {
@@ -30,31 +33,22 @@ public class PlayerProjectile extends GameObject {
         force.y += vector.y;
     }
 
-    public void calculateTrajectory(float deltat){
+    public void calculateTrajectory(double deltaTime){
         PointF pos = this.getPosition();
-        velocity.x += (force.x / mass) * deltat;
-        velocity.y += (force.y / mass) * deltat;
+        velocity.x += (force.x / mass) * deltaTime;
+        velocity.y += (force.y / mass) * deltaTime;
         force.x = 0;
         force.y = 0;
         rotation = (float)Math.toDegrees(Math.atan2(velocity.y, velocity.x));
-        pos.x += velocity.x * deltat;
-        pos.y += velocity.y * deltat;
-    }
-
-    PlayerProjectile(GameWorld p) {
-        super(p);
-    }
-
-    PlayerProjectile(GameWorld p, PointF vel) {
-        super(p);
-        velocity = vel;
+        pos.x += velocity.x * deltaTime;
+        pos.y += velocity.y * deltaTime;
     }
 
     @Override
-    public void doGameTick(float deltat) {
-        LinkedList<GameObject> objs = this.getParent().getGameObjects();
+    public void tick(double deltaTime) {
+        LinkedList<GameObject> objs = this.getParent().getObjects();
 
-        calculateTrajectory(deltat);;
+        calculateTrajectory(deltaTime);
 
         //deal with collision against walls
         if(position.x - scale / 2 <= 0){
@@ -83,27 +77,28 @@ public class PlayerProjectile extends GameObject {
         }
 
 
-        for(GameObject obj : objs){
-            // if the projectile bounces off the object, handle that. Otherwise ignore this object
-            if(obj.projectileCollision()){
+        for(GameObject obj : objs) {
+            // If the projectile bounces off the object, handle that, otherwise ignore this object
+            if(isColliding(obj)){
                 PointF objpos = obj.getPosition();
                 float objrot = obj.getRotation();
                 float objscale = obj.getScale();
                 String shape = obj.getShape();
+
                 switch (shape){
                     case "CIRCLE":
                         float xdist = this.position.x - objpos.x;
                         float ydist = this.position.y - objpos.y;
-                        //use the square of the distances, so we don't have to square root
+                        // Use the square of the distances, so we don't have to square root
                         float dsq = xdist * xdist + ydist * ydist;
-                        // the sum of the radii of the circles: the minimum distance the circles can be apart without touching
+                        // The sum of the radii of the circles: the minimum distance the circles can be apart without touching
                         float sumrads = (this.scale + objscale) / 2;
                         if(dsq < sumrads * sumrads){
                             float velangle = (float)Math.atan2(velocity.y, velocity.x);
 
-                            // angle from ball to object - normal to plane of reflection
+                            // Angle from ball to object - normal to plane of reflection
                             float normangle = (float)Math.atan2(ydist, xdist);
-                            // calculate reflected angle
+                            // Calculate reflected angle
                             float newAngle = 2*normangle - velangle;
 
                             float speed = (float)Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
@@ -113,12 +108,9 @@ public class PlayerProjectile extends GameObject {
                         break;
                     default:
                         // simple square, no rotation consideration
-                        // do nothing for now though
-
+                        //...
                 }
-
             }
         }
-
     }
 }

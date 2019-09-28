@@ -2,62 +2,63 @@ package com.example.duckgame;
 
 import android.graphics.Canvas;
 import android.graphics.PointF;
-import android.graphics.drawable.Drawable;
 
 import java.util.LinkedList;
 
 public class GameWorld {
-    // the dimensions of the level
-    private PointF size;
 
-    // all the objects in the level
-    private LinkedList<GameObject> gameObjects = new LinkedList<GameObject>();
-    private LinkedList<GameObject> activeObjects = new LinkedList<GameObject>();
+    private LinkedList<GameObject> Objects = new LinkedList<>(); // All the objects in the level
+    private LinkedList<GameObject> activeObjects = new LinkedList<>(); // All objects that need updating
+    private PointF size; // The dimensions of the level in game units
 
-    public void doGameTick(float deltat) {
-        for(GameObject obj : activeObjects){
-            obj.doGameTick(deltat);
-        }
-    }
+    GameWorld(LinkedList<GameObject> levelObjects, PointF levelSize) {
+        Objects = levelObjects;
+        //TODO: add only certain types of GameObjects to activeObjects
+        // i.e. objects that change position, rotation, scale, sprite,
+        // or objects with their own collision checking
+        activeObjects = levelObjects;
 
-    public LinkedList<GameObject> getGameObjects(){
-        return gameObjects;
-    }
-
-    public void addObject(GameObject obj){
-        gameObjects.add(obj);
-    }
-
-    public void addActiveObject(GameObject obj){
-        gameObjects.add(obj);
-        activeObjects.add(obj);
-    }
-
-    public void removeObject(GameObject obj){
-        gameObjects.remove(obj);
-    }
-
-    public void removeActiveObject(GameObject obj){
-        gameObjects.remove(obj);
-        activeObjects.remove(obj);
-    }
-
-    public PointF getSize() {
-        return size;
-    }
-
-    public void draw(GraphicsView graphicsView, Canvas canvas, float deltat) {
-        graphicsView.setGameObjects(gameObjects);
-        doGameTick(deltat);
-        graphicsView.draw(canvas);
-    }
-
-    GameWorld(PointF size){
-        // initial size and objects, for testing
-        this.size = size;
-        PlayerProjectile proj = new PlayerProjectile(this, new PointF(0.0000000002F,0.0000000001F));
-        proj.setPosition(new PointF( 1F, 4F));
+        // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
+        size = new PointF(16, 8);
+        PlayerProjectile proj = new PlayerProjectile(this, R.drawable.player, new PointF( 1F, 4F), 0, 1, new PointF(0.2F,0.1F));
         addActiveObject(proj);
     }
 
+    public void tick(double deltaTime) {
+        for(GameObject obj : activeObjects){
+            obj.tick(deltaTime);
+        }
+    }
+
+    public void draw(GraphicsView graphicsView, Canvas canvas) {
+        graphicsView.setGameObjects(Objects);
+        graphicsView.draw(canvas);
+    }
+
+    public void addObject(GameObject obj) {
+        Objects.add(obj);
+    }
+
+    public void addActiveObject(GameObject obj) {
+        Objects.add(obj);
+        activeObjects.add(obj);
+    }
+
+    public void removeObject(GameObject obj) {
+        Objects.remove(obj);
+    }
+
+    public void removeActiveObject(GameObject obj) {
+        Objects.remove(obj);
+        activeObjects.remove(obj);
+    }
+
+    /** Properties **/
+
+    public LinkedList<GameObject> getObjects() {
+        return Objects;
+    }
+    public PointF getSize() {
+        return size;
+    }
 }
