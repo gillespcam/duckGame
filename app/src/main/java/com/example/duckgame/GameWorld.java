@@ -20,8 +20,7 @@ public class GameWorld {
 
         // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
         size = new PointF(16, 8);
-        PlayerProjectile proj = new PlayerProjectile(this, R.drawable.player, new PointF( 1F, 4F), 0, 1, new PointF(0.2F,0.1F));
-        addActiveObject(proj);
+        addActiveObject(new PlayerProjectile(this, R.drawable.player, new PointF( 1F, 4F), 0, 1, new PointF(0.2F,0.1F)));
     }
 
     public void tick(double deltaTime) {

@@ -34,20 +34,17 @@ public class PlayerProjectile extends GameObject {
     }
 
     public void calculateTrajectory(double deltaTime){
-        PointF pos = this.getPosition();
         velocity.x += (force.x / mass) * deltaTime;
         velocity.y += (force.y / mass) * deltaTime;
         force.x = 0;
         force.y = 0;
         rotation = (float)Math.toDegrees(Math.atan2(velocity.y, velocity.x));
-        pos.x += velocity.x * deltaTime;
-        pos.y += velocity.y * deltaTime;
+        position.x += velocity.x * deltaTime;
+        position.y += velocity.y * deltaTime;
     }
 
     @Override
     public void tick(double deltaTime) {
-        LinkedList<GameObject> objs = this.getParent().getObjects();
-
         calculateTrajectory(deltaTime);
 
         //deal with collision against walls
@@ -57,7 +54,7 @@ public class PlayerProjectile extends GameObject {
             velocity.x *= bounciness;
             velocity.y *= bounciness;
         }
-        if(position.x + scale / 2 >= this.getParent().getSize().x){
+        if(position.x + scale / 2 >= parent.getSize().x){
             position.x = this.getParent().getSize().x - scale / 2;
             velocity.x -= 2 * Math.abs(velocity.x);
             velocity.x *= bounciness;
@@ -69,14 +66,14 @@ public class PlayerProjectile extends GameObject {
             velocity.x *= bounciness;
             velocity.y *= bounciness;
         }
-        if(position.y + scale / 2 >= this.getParent().getSize().y){
+        if(position.y + scale / 2 >= parent.getSize().y){
             position.y = this.getParent().getSize().y - scale / 2;
             velocity.y -= 2 * Math.abs(velocity.y);
             velocity.x *= bounciness;
             velocity.y *= bounciness;
         }
 
-
+        LinkedList<GameObject> objs = parent.getObjects();
         for(GameObject obj : objs) {
             // If the projectile bounces off the object, handle that, otherwise ignore this object
             if(isColliding(obj)){
