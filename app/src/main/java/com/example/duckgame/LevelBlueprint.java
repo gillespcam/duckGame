@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class LevelBlueprint {
 
@@ -26,32 +23,36 @@ public class LevelBlueprint {
 
         for (int i = 0; i < levelData.length(); ++i){
             // Get levelSize
-            if (i == 1) {
+            if (i == 0) {
                 int[] levelSize = context.getResources().getIntArray(levelData.getResourceId(i, 0));
                 this.levelSize.x = levelSize[0];
                 this.levelSize.y = levelSize[1];
             }
-            // Get levelObjectsData
+            // Get levelObjects
             else {
+                TypedArray levelObjects = context.getResources().obtainTypedArray(levelData.getResourceId(i, 0));
+                for (int j = 0; j < levelObjects.length(); ++j){
+                    // Get types
+                    //...
+                    // Get sprites
+                    //...
+                    // Get positions
+                    //...
+                    // Get rotations
+                    //...
+                    // Get scales
+                    //...
+                }
             }
         }
 
         level = new GameWorld(levelSize);
 
+        // Instantiate and add levelObjects to level
+        //...
+
         // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
         level.addPlayerObject(new Player(level, R.drawable.player, new PointF( 2F, 4F), 0, 1, new PointF(3F,3F)));
-
-        // Create and add levelObjects
-        /*for (int i = 0; i < types.size(); ++i) {
-            switch (types.get(i)){
-                case "Player":
-                    break;
-                case "Goal":
-                    break;
-                default:
-                    Log.e(TAG, "ERROR: Specified GameObject in level specification does not exist, skipping object");
-            }
-        }*/
     }
 
     public GameWorld createGameWorld() {

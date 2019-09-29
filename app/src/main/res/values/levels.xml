@@ -10,6 +10,10 @@
 
     <!-- LEVEL 0 -->
 
+    <integer-array name="level_0_size">
+        <item>16</item>
+        <item>8</item>
+    </integer-array>
     <string-array name="level_0_types">
         <item>Player</item>
     </string-array>
@@ -36,13 +40,9 @@
         <item>@array/level_0_rotations</item>
         <item>@array/level_0_scales</item>
     </array>
-    <integer-array name="level_0_size">
-        <item>16</item>
-        <item>8</item>
-    </integer-array>
     <array name="level_0">
-        <item>@array/level_0_objects</item>
         <item>@array/level_0_size</item>
+        <item>@array/level_0_objects</item>
     </array>
 
 </resources>
