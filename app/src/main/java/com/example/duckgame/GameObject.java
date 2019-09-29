@@ -22,9 +22,7 @@ abstract class GameObject {
         this.scale = scale;
     }
 
-    public void tick(double deltaTime){
-        // By default, the object does nothing
-    }
+    public abstract GameObject clone(GameWorld parent, int sprite, PointF position, float rotation, float scale);
 
     /** Properties **/
 

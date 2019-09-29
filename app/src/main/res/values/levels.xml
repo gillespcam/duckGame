@@ -2,47 +2,47 @@
 <resources>
 
     <string-array name="level_names">
-        <item>"Level 1"</item>
+        <item>"Level 0"</item>
     </string-array>
     <array name="levels">
-        <item>@array/level_1</item>
+        <item>@array/level_0</item>
     </array>
 
-    <!-- LEVEL 1 -->
+    <!-- LEVEL 0 -->
 
-    <array name="level_1_types">
+    <string-array name="level_0_types">
         <item>Player</item>
-    </array>
-    <array name="level_1_sprites">
+    </string-array>
+    <array name="level_0_sprites">
         <item>@drawable/player</item>
     </array>
-    <array name="level_1_xpositions">
+    <array name="level_0_xpositions">
         <item>2</item>
     </array>
-    <array name="level_1_ypositions">
+    <array name="level_0_ypositions">
         <item>4</item>
     </array>
-    <array name="level_1_rotations">
+    <array name="level_0_rotations">
         <item>0</item>
     </array>
-    <array name="level_1_scales">
+    <array name="level_0_scales">
         <item>1</item>
     </array>
-    <array name="level_1_objects">
-        <item>@array/level_1_types</item>
-        <item>@array/level_1_sprites</item>
-        <item>@array/level_1_xpositions</item>
-        <item>@array/level_1_ypositions</item>
-        <item>@array/level_1_rotations</item>
-        <item>@array/level_1_scales</item>
+    <array name="level_0_objects">
+        <item>@array/level_0_types</item>
+        <item>@array/level_0_sprites</item>
+        <item>@array/level_0_xpositions</item>
+        <item>@array/level_0_ypositions</item>
+        <item>@array/level_0_rotations</item>
+        <item>@array/level_0_scales</item>
     </array>
-    <array name="level_1_size">
+    <integer-array name="level_0_size">
         <item>16</item>
         <item>8</item>
-    </array>
-    <array name="level_1">
-        <item>@array/level_1_objects</item>
-        <item>@array/level_1_size</item>
+    </integer-array>
+    <array name="level_0">
+        <item>@array/level_0_objects</item>
+        <item>@array/level_0_size</item>
     </array>
 
 </resources>

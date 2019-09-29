@@ -17,6 +17,7 @@ public class GameThread extends Thread {
 
     private SurfaceHolder surfaceHolder;
     private GraphicsView graphicsView;
+    private LevelBlueprint levelBlueprint;
     public static Canvas canvas;
 
     private boolean running;
@@ -28,12 +29,13 @@ public class GameThread extends Thread {
 
     private GameWorld level;
 
-    GameThread(SurfaceHolder surfaceHolder, GraphicsView graphicsView, LinkedList<GameObject> levelObjects, PointF levelSize){
+    GameThread(SurfaceHolder surfaceHolder, GraphicsView graphicsView, LevelBlueprint levelBlueprint){
         super();
         this.surfaceHolder = surfaceHolder;
         this.graphicsView = graphicsView;
-        // Create new world using given specifications by levelsActivity
-        level = new GameWorld(levelObjects, levelSize);
+        this.levelBlueprint = levelBlueprint;
+        // Create new world using given specifications by levelsBlueprint
+        level = levelBlueprint.createGameWorld();
     }
 
     @Override
@@ -71,9 +73,6 @@ public class GameThread extends Thread {
         }
     }
 
-    public void pauseGame(){paused = true;}
-    public void resumeGame(){paused = false;}
-
     public void launchPlayer(PointF coords){
         launched = true;
         level.launchPlayer(coords);
@@ -82,6 +81,11 @@ public class GameThread extends Thread {
     public void aimPlayer(PointF coords){
         level.aimPlayer(coords);
     }
+
+    public void pauseGame(){paused = true;}
+    public void resumeGame(){paused = false;}
+
+
 
     /** Properties **/
 

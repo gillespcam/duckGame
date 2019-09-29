@@ -4,7 +4,7 @@ import android.graphics.PointF;
 
 import java.util.LinkedList;
 
-public class Player extends GameObject {
+public class Player extends ActiveGameObject {
 
     private boolean launched = false;
 
@@ -12,15 +12,12 @@ public class Player extends GameObject {
     private float bounciness = 0.7F; // Fraction of speed the projectile conserves after a bounce collision
     private float friction = -0.2F;
     private float launchSpeed = 1F;
+
     private PointF force = new PointF(0, 0); // Net force acting on projectile
     private PointF velocity = new PointF(0, 0); // Current velocity of projectile
 
-    public boolean isColliding(GameObject object) {
-        return false;
-    }
-    public String getShape() {
-        return "CIRCLE";
-    }
+    public boolean isColliding(GameObject object) { return false; }
+    public String getShape() { return "CIRCLE"; }
 
     Player(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
         super(parent, sprite, position, rotation, scale);
@@ -33,24 +30,23 @@ public class Player extends GameObject {
 
     }
 
-    @Override
     public void tick(double deltaTime) {
         if(launched){
             calculateTrajectory(deltaTime);
             boundaryCollision();
             objectCollion();
-        } else {
-            // look towards player touch
-
         }
     }
 
-    public void aimTouch(PointF coords) {
+    public Player clone(GameWorld parent, int sprite, PointF position, float rotation, float scale){
+        return new Player(parent, sprite, position, rotation, scale);
+    }
+
+    public void aim(PointF coords) {
         rotation = (float) Math.toDegrees(Math.atan2((coords.y - position.y), (coords.x - position.x)));
     }
 
     public void launch(PointF coords){
-
         velocity.x = (coords.x - position.x) * launchSpeed;
         velocity.y = (coords.y - position.y) * launchSpeed;
         launched = true;

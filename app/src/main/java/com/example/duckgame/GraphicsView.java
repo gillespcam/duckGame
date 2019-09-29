@@ -21,7 +21,6 @@ import java.util.LinkedList;
 
 public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback {
 
-
     private final String TAG = "GraphicsView";
 
     private int screenWidth;
@@ -42,13 +41,12 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     private int launchMotion = -1; // -1 means no launch motion has been initiated
 
-    GraphicsView (Context context, LinkedList<GameObject> levelObjects, PointF levelSize) {
+    GraphicsView (Context context, LevelBlueprint levelBlueprint) {
         super(context);
-        gameObjects = levelObjects;
-        gameSize = levelSize;
+        gameSize = levelBlueprint.getLevelSize();
 
         getHolder().addCallback(this);
-        game = new GameThread(getHolder(), this, levelObjects, levelSize);
+        game = new GameThread(getHolder(), this, levelBlueprint);
         setFocusable(true);
 
         // Initialise the paint options
@@ -66,9 +64,12 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     @Override
     public void draw(Canvas canvas){
+        // Clear the canvas - comment out this line to activate the  W I N D O W S  X P  I M M E R S I V E  E X P E R I E N C E
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+
         super.draw(canvas);
 
+        // Draw basic pond
         canvas.drawRect(offset.x, offset.y, scale * gameSize.x + offset.x, scale * gameSize.y + offset.y, paint);
 
         // Draw GameWorld objects with updated positions, dimensions etc.
@@ -76,10 +77,10 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             bitmap = sprites.get(gameObject.getSprite());
             float spriteScale = gameObject.getScale() * scale / bitmap.getWidth();
             PointF middleCoord = new PointF(bitmap.getWidth() / 2F, bitmap.getHeight() / 2F);
+
             matrix.setRotate(gameObject.getRotation(), middleCoord.x, middleCoord.y );
             matrix.postScale(spriteScale, spriteScale);
             matrix.postTranslate(gameObject.getPosition().x * scale + offset.x - middleCoord.x * spriteScale, gameObject.getPosition().y * scale + offset.y - middleCoord.y * spriteScale);
-
 
             canvas.drawBitmap(bitmap, matrix, paint);
         }

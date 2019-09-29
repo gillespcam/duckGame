@@ -35,24 +35,25 @@ public class GameActivity extends AppCompatActivity {
 
         // Create LevelData for current game
         TypedArray levels = getResources().obtainTypedArray(R.array.levels);
-        // Get the TypedArray for the chosen level
-        TypedArray levelData = getResources().obtainTypedArray(levels.getResourceId(getIntent().getIntExtra("id", 0),0));
-        LevelBlueprint levelBlueprint = new LevelBlueprint(levelData);
+        int levelID = getIntent().getIntExtra("id", 0);
+        TypedArray levelData = getResources().obtainTypedArray(levels.getResourceId(levelID, 0));
+        // Create blueprint of the level that can be used to replicate a GameWorld anytime
+        LevelBlueprint levelBlueprint = new LevelBlueprint(this, levelID, levelData);
 
         // Create new instance of GraphicsView with selected level specifications
-        graphicsView = new GraphicsView(this, new LinkedList<GameObject>(), new PointF(16, 8));
+        graphicsView = new GraphicsView(this, levelBlueprint);
         graphicsView.setZOrderOnTop(true);
         graphicsView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         ContentView.addView(graphicsView);
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
         GameThread game = graphicsView.getGameThread();
         if (!game.getPaused()) game.pauseGame();
         else game.resumeGame();
-    }
+    }*/
 
     @Override
     protected void onPause(){

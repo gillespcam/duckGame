@@ -1,78 +1,78 @@
 package com.example.duckgame;
 
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.graphics.PointF;
 
 import java.util.LinkedList;
 
 public class GameWorld {
 
-    private LinkedList<GameObject> Objects; // All the objects in the level
-    private LinkedList<GameObject> activeObjects; // All objects that need updating
+    private LinkedList<GameObject> objects = new LinkedList<>(); // All the objects in the level
+    private LinkedList<ActiveGameObject> activeObjects = new LinkedList<>(); // All objects that need updating
+    private Player playerObject; // The player object
     private PointF size; // The dimensions of the level in game units
-    private Player playerObject;
 
-    GameWorld(LinkedList<GameObject> levelObjects, PointF levelSize) {
-        Objects = levelObjects;
-        //TODO: add only certain types of GameObjects to activeObjects
-        // i.e. objects that change position, rotation, scale, sprite,
-        // or objects with their own collision checking
-        activeObjects = levelObjects;
+    GameWorld(PointF levelSize) {
         size = levelSize;
-
-        // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
-        addPlayerObject(new Player(this, R.drawable.player, new PointF( 2F, 4F), 0, 1, new PointF(3F,3F)));
     }
 
+    public void aimPlayer(PointF coords){
+        playerObject.aim(coords);
+    }
     public void launchPlayer(PointF coords){
         playerObject.launch(coords);
     }
 
-    public void aimPlayer(PointF coords){
-        playerObject.aimTouch(coords);
-    }
-
     public void tick(double deltaTime) {
         deltaTime /= 1000000000; // Convert deltaTime from nanoseconds to seconds
-        for(GameObject obj : activeObjects){
+        for(ActiveGameObject obj : activeObjects){
             obj.tick(deltaTime);
         }
     }
 
     public void draw(GraphicsView graphicsView, Canvas canvas) {
-        graphicsView.setGameObjects(Objects);
+        graphicsView.setGameObjects(objects);
         graphicsView.draw(canvas);
     }
 
     public void addObject(GameObject obj) {
-        Objects.add(obj);
+        objects.add(obj);
     }
 
-    public void addActiveObject(GameObject obj) {
-        Objects.add(obj);
+    public void addActiveObject(ActiveGameObject obj) {
+        objects.add(obj);
         activeObjects.add(obj);
     }
 
     public void addPlayerObject(Player obj) {
-        Objects.add(obj);
+        objects.add(obj);
         activeObjects.add(obj);
         playerObject = obj;
     }
 
     public void removeObject(GameObject obj) {
-        Objects.remove(obj);
+        objects.remove(obj);
     }
 
-    public void removeActiveObject(GameObject obj) {
-        Objects.remove(obj);
+    public void removeActiveObject(ActiveGameObject obj) {
+        objects.remove(obj);
         activeObjects.remove(obj);
+    }
+
+    public GameWorld clone(){
+        GameWorld r = new GameWorld(size);
+        for (GameObject obj : objects) {
+            if (obj instanceof Player) r.addPlayerObject((Player)obj.clone(r, obj.sprite, obj.position, obj.rotation, obj.scale));
+            else if(obj instanceof ActiveGameObject) r.addActiveObject((ActiveGameObject)obj.clone(r, obj.sprite, obj.position, obj.rotation, obj.scale));
+            else r.addObject(obj.clone(r, obj.sprite, obj.position, obj.rotation, obj.scale));
+        }
+        return r;
     }
 
     /** Properties **/
 
     public LinkedList<GameObject> getObjects() {
-        return Objects;
+        return objects;
     }
     public PointF getSize() {
         return size;
