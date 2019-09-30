@@ -21,11 +21,11 @@
 
          The level's object data contains another 6 arrays, each containing a part of all the data
          that is used to construct a GameObject. A single GameObject is made up of all
-         the array items that share the same index value.
+         the array items that share the same index.
 
-         e.g. "level_0_objects" includes a Player type with sprite id @drawable/player, at position
+         e.g. "level_0_objects" includes a Player type with sprite @drawable/player, at position
          point (2,4), rotated 0 rad, with a scale of 1. The values from the 0 index of each array
-         make up all the information needed to create this GameObject. -->
+         supply all the information needed to create this GameObject. We call this GameObject. 0 -->
 
     <!-- LEVEL 0 -->
 
