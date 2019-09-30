@@ -3,9 +3,11 @@ package com.example.duckgame;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 @SuppressWarnings("ResourceType")
 
@@ -28,9 +30,9 @@ public class LevelBlueprint {
 
         TypedArray levelObjects = context.getResources().obtainTypedArray(levelData.getResourceId(1, 0));
         String[] types = context.getResources().getStringArray(levelObjects.getResourceId(0,0));
-        int[] sprites = context.getResources().getIntArray(levelObjects.getResourceId(1,0));
-        TypedArray xpositions = context.getResources().obtainTypedArray(levelObjects.getResourceId(2,0));
-        TypedArray ypositions = context.getResources().obtainTypedArray(levelObjects.getResourceId(3,0));
+        TypedArray sprites = context.getResources().obtainTypedArray(levelObjects.getResourceId(1,0));
+        TypedArray xPositions = context.getResources().obtainTypedArray(levelObjects.getResourceId(2,0));
+        TypedArray yPositions = context.getResources().obtainTypedArray(levelObjects.getResourceId(3,0));
         TypedArray rotations = context.getResources().obtainTypedArray(levelObjects.getResourceId(4,0));
         TypedArray scales = context.getResources().obtainTypedArray(levelObjects.getResourceId(5,0));
 
@@ -45,14 +47,30 @@ public class LevelBlueprint {
                 // Find a class whose name matches the given string in 'types', else log an error and skip adding this object
                 Class type = Class.forName("com.example.duckgame." + typeName);
                 // Find a constructor for the objects class whose parameters' classes match those given, else log an error and skip adding this object
-                Constructor c = type.getConstructor(GameWorld.class, int.class, PointF.class, float.class, float.class);
-                //...
+                Constructor constructor = type.getConstructor(GameWorld.class, int.class, PointF.class, float.class, float.class);
+
+                // Get necessary GameObject parameters
+                int sprite = sprites.getResourceId(i, -1);
+                PointF position = new PointF(xPositions.getFloat(i, 0F), yPositions.getFloat(i, 0F));
+                float rotation = rotations.getFloat(i, 0F);
+                float scale = scales.getFloat(i, 0F);
+                Log.i(TAG, "GameObject " + i + " given sprite " + context.getResources().getResourceEntryName(sprite) +
+                        ", position (" + position.x + "," + position.y + "), rotation " + rotation + ", and scale " + scale);
+
+                // Instantiate and add GameObject to level
+                GameObject obj = (GameObject)constructor.newInstance(level, sprite, position, rotation, scale);
+                if (obj instanceof Player) level.addPlayerObject((Player)obj);
+                else if(obj instanceof ActiveGameObject) level.addActiveObject((ActiveGameObject)obj);
+                else level.addObject(obj);
+                Log.i(TAG, "GameObject " + i + " added successfully to level!");
             }
-            catch(ClassNotFoundException | NoSuchMethodException e) { Log.e(TAG, "ERROR: Cannot find class or constructor of class " + typeName + ", skipping object"); }
+            catch(ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                Log.e(TAG, "ERROR: Cannot find class or constructor of class " + typeName + ", skipping object");
+            }
         }
         levelObjects.recycle();
-        xpositions.recycle();
-        ypositions.recycle();
+        xPositions.recycle();
+        yPositions.recycle();
         rotations.recycle();
         scales.recycle();
 

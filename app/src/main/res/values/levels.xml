@@ -36,13 +36,13 @@
     <string-array name="level_0_types">
         <item>Player</item>
     </string-array>
-    <integer-array name="level_0_sprites">
+    <array name="level_0_sprites">
         <item>@drawable/player</item>
-    </integer-array>
-    <array name="level_0_xpositions">
+    </array>
+    <array name="level_0_x_positions">
         <item>2</item>
     </array>
-    <array name="level_0_ypositions">
+    <array name="level_0_y_positions">
         <item>4</item>
     </array>
     <array name="level_0_rotations">
@@ -54,8 +54,8 @@
     <array name="level_0_objects">
         <item>@array/level_0_types</item>
         <item>@array/level_0_sprites</item>
-        <item>@array/level_0_xpositions</item>
-        <item>@array/level_0_ypositions</item>
+        <item>@array/level_0_x_positions</item>
+        <item>@array/level_0_y_positions</item>
         <item>@array/level_0_rotations</item>
         <item>@array/level_0_scales</item>
     </array>
