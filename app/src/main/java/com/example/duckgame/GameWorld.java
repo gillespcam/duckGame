@@ -37,35 +37,15 @@ public class GameWorld {
     }
 
     public void addObject(GameObject obj) {
+        if (obj instanceof Player) playerObject = (Player)obj;
+        if (obj instanceof ActiveGameObject) activeObjects.add((ActiveGameObject)obj);
         objects.add(obj);
-    }
-
-    public void addActiveObject(ActiveGameObject obj) {
-        objects.add(obj);
-        activeObjects.add(obj);
-    }
-
-    public void addPlayerObject(Player obj) {
-        objects.add(obj);
-        activeObjects.add(obj);
-        playerObject = obj;
-    }
-
-    public void removeObject(GameObject obj) {
-        objects.remove(obj);
-    }
-
-    public void removeActiveObject(ActiveGameObject obj) {
-        objects.remove(obj);
-        activeObjects.remove(obj);
     }
 
     public GameWorld clone(){
         GameWorld r = new GameWorld(size);
         for (GameObject obj : objects) {
-            if (obj instanceof Player) r.addPlayerObject((Player)obj.clone(r, obj.sprite, obj.position, obj.rotation, obj.scale));
-            else if(obj instanceof ActiveGameObject) r.addActiveObject((ActiveGameObject)obj.clone(r, obj.sprite, obj.position, obj.rotation, obj.scale));
-            else r.addObject(obj.clone(r, obj.sprite, obj.position, obj.rotation, obj.scale));
+            r.addObject(obj.clone(r, obj.sprite, obj.position, obj.rotation, obj.scale));
         }
         return r;
     }

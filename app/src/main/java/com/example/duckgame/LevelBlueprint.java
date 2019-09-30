@@ -59,9 +59,7 @@ public class LevelBlueprint {
 
                 // Instantiate and add GameObject to level
                 GameObject obj = (GameObject)constructor.newInstance(level, sprite, position, rotation, scale);
-                if (obj instanceof Player) level.addPlayerObject((Player)obj);
-                else if(obj instanceof ActiveGameObject) level.addActiveObject((ActiveGameObject)obj);
-                else level.addObject(obj);
+                level.addObject(obj);
                 Log.i(TAG, "GameObject " + i + " added successfully to level!");
             }
             catch(ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
@@ -73,9 +71,6 @@ public class LevelBlueprint {
         yPositions.recycle();
         rotations.recycle();
         scales.recycle();
-
-        // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
-        level.addPlayerObject(new Player(level, R.drawable.player, new PointF( 2F, 4F), 0, 1));
     }
 
     public GameWorld createGameWorld() {
