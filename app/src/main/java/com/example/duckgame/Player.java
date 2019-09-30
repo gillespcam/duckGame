@@ -65,25 +65,25 @@ public class Player extends ActiveGameObject {
         //deal with collision against walls
         if(position.x - scale / 2 <= 0){
             position.x = scale / 2;
-            velocity.x += 2 * Math.abs(velocity.x);
+            velocity.x = Math.abs(velocity.x);
             velocity.x *= bounciness;
             velocity.y *= bounciness;
         }
         if(position.x + scale / 2 >= parent.getSize().x){
             position.x = this.getParent().getSize().x - scale / 2;
-            velocity.x -= 2 * Math.abs(velocity.x);
+            velocity.x = -Math.abs(velocity.x);
             velocity.x *= bounciness;
             velocity.y *= bounciness;
         }
         if(position.y - scale / 2 <= 0){
             position.y = scale / 2;
-            velocity.y += 2 * Math.abs(velocity.y);
+            velocity.y = Math.abs(velocity.y);
             velocity.x *= bounciness;
             velocity.y *= bounciness;
         }
         if(position.y + scale / 2 >= parent.getSize().y){
             position.y = this.getParent().getSize().y - scale / 2;
-            velocity.y -= 2 * Math.abs(velocity.y);
+            velocity.y = -Math.abs(velocity.y);
             velocity.x *= bounciness;
             velocity.y *= bounciness;
         }
