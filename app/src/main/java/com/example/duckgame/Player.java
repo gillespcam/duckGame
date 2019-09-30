@@ -19,7 +19,7 @@ public class Player extends ActiveGameObject {
     public boolean isColliding(GameObject object) { return false; }
     public String getShape() { return "CIRCLE"; }
 
-    Player(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
+    public Player(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
         super(parent, sprite, position, rotation, scale);
     }
 

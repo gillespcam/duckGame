@@ -14,7 +14,7 @@ abstract class GameObject {
     public abstract boolean isColliding(GameObject object); // If the object is colliding with given object or not
     public abstract String getShape(); // The shape, hence type of collision checking the object uses
 
-    GameObject(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
+    public GameObject(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
         this.parent = parent;
         this.sprite = sprite;
         this.position = position;
