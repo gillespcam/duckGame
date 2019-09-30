@@ -21,6 +21,7 @@ public class LevelBlueprint {
         TypedArray levelSize = context.getResources().obtainTypedArray(levelData.getResourceId(0, 0));
         size.x = levelSize.getFloat(0, 0F);
         size.y = levelSize.getFloat(1, 0F);
+        levelSize.recycle();
 
         level = new GameWorld(size);
 
@@ -41,9 +42,11 @@ public class LevelBlueprint {
                 //...
             }
         }
+        levelObjects.recycle();
+        levelTypes.recycle();
 
         // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
-        level.addPlayerObject(new Player(level, R.drawable.player, new PointF( 2F, 4F), 0, 1, new PointF(3F,3F)));
+        level.addPlayerObject(new Player(level, R.drawable.player, new PointF( 2F, 4F), 0, 1));
     }
 
     public GameWorld createGameWorld() {

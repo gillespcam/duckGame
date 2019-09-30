@@ -23,13 +23,6 @@ public class Player extends ActiveGameObject {
         super(parent, sprite, position, rotation, scale);
     }
 
-    // Initialises projectile with initial velocity. For testing purposes only
-    Player(GameWorld parent, int sprite, PointF position, float rotation, float scale, PointF velocity) {
-        super(parent, sprite, position, rotation, scale);
-        this.velocity = velocity;
-
-    }
-
     public void tick(double deltaTime) {
         if(launched){
             calculateTrajectory(deltaTime);
