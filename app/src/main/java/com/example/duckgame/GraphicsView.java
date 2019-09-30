@@ -39,7 +39,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
     private int pixmargin = 20;
     private PointF offset = new PointF(0,0);
 
-    private int launchMotion = -1; // -1 means no launch motion has been initiated
+    private boolean launchInProgress = false;
 
     GraphicsView (Context context, LevelBlueprint levelBlueprint) {
         super(context);
@@ -132,34 +132,48 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
     @Override
     public boolean onTouchEvent(MotionEvent event){
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            Log.i(TAG, "DOWN");
             // if we're not paused or launched, we can start the launch procedure
             if(!game.getPaused() && !game.getLaunched()){
                 // no launch motion currently in progress
-                if(launchMotion == -1) {
-                    launchMotion = event.getPointerId(0);
+                if(!launchInProgress) {
+                    launchInProgress = true;
+                    return true;
                 }
             }
         } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
+            Log.i(TAG, "MOVE" + event.getPointerCount());
             // if we currently have a launch motion in progress
-            if(launchMotion != -1){
-                int pointer = event.findPointerIndex(launchMotion);
-                float aimx = event.getX(pointer);
-                float aimy = event.getY(pointer);
-                PointF aimGamePoint = new PointF(aimx / scale, aimy / scale);
+            if(launchInProgress){
+                int pointer = event.findPointerIndex(0);
+                PointF aimGamePoint = new PointF(event.getX(pointer) / scale, event.getY(pointer) / scale);
                 game.aimPlayer(aimGamePoint);
+                return true;
             }
         } else if(event.getAction() == MotionEvent.ACTION_UP) {
+            Log.i(TAG, "UP" + event.getPointerCount());
             // if we currently have a launch motion in progress
-            if(launchMotion != -1){
-                int pointer = event.findPointerIndex(launchMotion);
-                float launchx = event.getX(pointer);
-                float launchy = event.getY(pointer);
-                launchMotion = -1; // we no longer need the pointer
-                PointF launchGamePoint = new PointF(launchx / scale, launchy / scale);
+            if(launchInProgress){
+                launchInProgress = false;
+                // hopefully we don't need this, saving it for later though
+                // int pointer = event.findPointerIndex(0);
+                PointF launchGamePoint = new PointF(event.getX() / scale, event.getY() / scale);
                 game.launchPlayer(launchGamePoint);
+                return true;
+            }
+        } else if(event.getAction() == MotionEvent.ACTION_POINTER_UP) {
+            Log.i(TAG, "POINTERUP" + event.getPointerCount());
+            // if we currently have a launch motion in progress
+            if(launchInProgress && (event.getActionIndex()) == 0){
+                launchInProgress = false;
+                // hopefully we don't need this, saving it for later though
+                //int pointer = event.findPointerIndex(0);
+                PointF launchGamePoint = new PointF(event.getX() / scale, event.getY() / scale);
+                game.launchPlayer(launchGamePoint);
+                return true;
             }
         }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     /** Properties **/

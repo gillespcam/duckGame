@@ -10,8 +10,8 @@ public class Player extends ActiveGameObject {
 
     private float mass = 1; // How much forces affect the change in velocity of the projectile
     private float bounciness = 0.7F; // Fraction of speed the projectile conserves after a bounce collision
-    private float friction = -0.2F;
-    private float launchSpeed = 1F;
+    private float friction = -0.9F;
+    private float launchSpeed = 3F;
 
     private PointF force = new PointF(0, 0); // Net force acting on projectile
     private PointF velocity = new PointF(0, 0); // Current velocity of projectile

@@ -53,7 +53,7 @@ public class GameThread extends Thread {
                 level.tick(TIME_PER_TICK);
                 deltaTime -= TIME_PER_TICK;
                 framesSkipped++;
-                Log.i(TAG, "Executed Tick");
+                // Log.i(TAG, "Executed Tick");
             }
 
             // Draw all objects on the level
@@ -68,7 +68,7 @@ public class GameThread extends Thread {
 
             if (!paused) {
                 deltaTime += System.nanoTime() - prevTime;
-                Log.i(TAG, "deltaTime: " + deltaTime);
+                // Log.i(TAG, "deltaTime: " + deltaTime);
             }
         }
     }

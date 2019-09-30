@@ -12,6 +12,7 @@ public class GameWorld {
     private LinkedList<ActiveGameObject> activeObjects = new LinkedList<>(); // All objects that need updating
     private Player playerObject; // The player object
     private PointF size; // The dimensions of the level in game units
+    private int score = 0; // The current score of the level
 
     GameWorld(PointF levelSize) {
         size = levelSize;
@@ -40,6 +41,10 @@ public class GameWorld {
         if (obj instanceof Player) playerObject = (Player)obj;
         if (obj instanceof ActiveGameObject) activeObjects.add((ActiveGameObject)obj);
         objects.add(obj);
+    }
+
+    public void playerStopped() {
+
     }
 
     public GameWorld clone(){
