@@ -43,7 +43,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     GraphicsView (Context context, LevelBlueprint levelBlueprint) {
         super(context);
-        gameSize = levelBlueprint.getLevelSize();
+        gameSize = levelBlueprint.getSize();
 
         getHolder().addCallback(this);
         game = new GameThread(getHolder(), this, levelBlueprint);

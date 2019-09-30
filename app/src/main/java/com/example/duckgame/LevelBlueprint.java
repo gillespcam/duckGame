@@ -6,50 +6,41 @@ import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import java.util.ArrayList;
 
+@SuppressWarnings("ResourceType")
+
 public class LevelBlueprint {
 
     private final String TAG = "LevelBlueprint";
 
     private GameWorld level;
-    private PointF levelSize = new PointF(1,1);
+    private PointF size = new PointF(1,1);
 
     LevelBlueprint(Context context, int levelID, TypedArray levelData) {
 
-        ArrayList<String> types = new ArrayList<>();
-        ArrayList<Drawable> sprites = new ArrayList<>();
-        ArrayList<PointF> positions = new ArrayList<>();
-        ArrayList<Float> rotations = new ArrayList<>();
-        ArrayList<Float> scales = new ArrayList<>();
+        // Get levelSize to instantiate model GameWorld
+        TypedArray levelSize = context.getResources().obtainTypedArray(levelData.getResourceId(0, 0));
+        size.x = levelSize.getFloat(0, 0F);
+        size.y = levelSize.getFloat(1, 0F);
 
-        for (int i = 0; i < levelData.length(); ++i){
-            // Get levelSize
-            if (i == 0) {
-                int[] levelSize = context.getResources().getIntArray(levelData.getResourceId(i, 0));
-                this.levelSize.x = levelSize[0];
-                this.levelSize.y = levelSize[1];
-            }
-            // Get levelObjects
-            else {
-                TypedArray levelObjects = context.getResources().obtainTypedArray(levelData.getResourceId(i, 0));
-                for (int j = 0; j < levelObjects.length(); ++j){
-                    // Get types
-                    //...
-                    // Get sprites
-                    //...
-                    // Get positions
-                    //...
-                    // Get rotations
-                    //...
-                    // Get scales
-                    //...
-                }
-            }
-        }
-
-        level = new GameWorld(levelSize);
+        level = new GameWorld(size);
 
         // Instantiate and add levelObjects to level
-        //...
+        TypedArray levelObjects = context.getResources().obtainTypedArray(levelData.getResourceId(1, 0));
+        TypedArray levelTypes = context.getResources().obtainTypedArray(levelObjects.getResourceId(0,0));
+        for (int i = 0; i < levelTypes.length(); ++i) {
+            for (int j = 0; j < levelObjects.length(); ++j) {
+                // Get types
+                //...
+                // Get sprites
+                //...
+                // Get positions
+                //...
+                // Get rotations
+                //...
+                // Get scales
+                //...
+            }
+        }
 
         // 🚧🚧🚧 Testing Zone 🚧🚧🚧 //
         level.addPlayerObject(new Player(level, R.drawable.player, new PointF( 2F, 4F), 0, 1, new PointF(3F,3F)));
@@ -62,7 +53,7 @@ public class LevelBlueprint {
 
     /** Properties **/
 
-    public PointF getLevelSize(){
-        return levelSize;
+    public PointF getSize(){
+        return level.getSize();
     }
 }

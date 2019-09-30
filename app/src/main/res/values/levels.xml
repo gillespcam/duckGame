@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- LEVEL ROSTER -->
+
+    <!-- Your level will not appear on the level select screen if it does not have a name in the
+         "level_names" array, and a reference in the "levels" array. -->
+
     <string-array name="level_names">
         <item>"Level 0"</item>
     </string-array>
@@ -8,18 +13,31 @@
         <item>@array/level_0</item>
     </array>
 
+    <!-- LEVEL DATA -->
+
+    <!-- A level can be formed manually by following the structure set out below.
+         Each array of level data consists of two arrays, one containing the size of the level,
+         and another containing the level's object data.
+
+         The level's object data is another set of arrays, each containing a part of all the data
+         that is used to construct a GameObject. A single GameObject is made up of all
+         the array items that share the same index value.
+
+         e.g. The "level_0_objects" includes a Player type with sprite player, at position
+         point (2,4), rotated 0 rad, with a scale of 1 -->
+
     <!-- LEVEL 0 -->
 
-    <integer-array name="level_0_size">
+    <array name="level_0_size">
         <item>16</item>
         <item>8</item>
-    </integer-array>
+    </array>
     <string-array name="level_0_types">
         <item>Player</item>
     </string-array>
-    <array name="level_0_sprites">
+    <integer-array name="level_0_sprites">
         <item>@drawable/player</item>
-    </array>
+    </integer-array>
     <array name="level_0_xpositions">
         <item>2</item>
     </array>
