@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.LinkedList;
@@ -16,11 +19,15 @@ public class GameActivity extends AppCompatActivity {
     private static final String TAG = "GameActivity";
 
     private GraphicsView graphicsView;
+    private GameThread game;
+
+    private ImageButton buttonPause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        buttonPause = findViewById(R.id.ButtonPause);
 
         // Enable Fullscreen
         ActionBar actionBar = getSupportActionBar();
@@ -42,18 +49,21 @@ public class GameActivity extends AppCompatActivity {
 
         // Create new instance of GraphicsView with selected level specifications
         graphicsView = new GraphicsView(this, levelBlueprint);
-        graphicsView.setZOrderOnTop(true);
-        graphicsView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        ContentView.addView(graphicsView);
+        game = graphicsView.getGameThread();
+        FrameLayout gameView = findViewById(R.id.GameView);
+        gameView.addView(graphicsView);
     }
 
-    /*@Override
-    public void onBackPressed() {
-        Log.d("CDA", "onBackPressed Called");
-        GameThread game = graphicsView.getGameThread();
-        if (!game.getPaused()) game.pauseGame();
-        else game.resumeGame();
-    }*/
+    public void onClickButtonPause(View view){
+        if (!game.getPaused()) {
+            game.pauseGame();
+            buttonPause.setImageResource(R.drawable.button_resume);
+        }
+        else {
+            game.resumeGame();
+            buttonPause.setImageResource(R.drawable.button_pause);
+        }
+    }
 
     @Override
     protected void onPause(){

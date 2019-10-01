@@ -23,14 +23,17 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     private final String TAG = "GraphicsView";
 
-    private int screenWidth;
-    private int screenHeight;
-    float scale; // How big one game unit is in terms of pixels
+    private float screenWidth;
+    private float screenHeight;
+    float scale;
 
-    private Paint paint;
+    private Paint spritePaint;
+    private Paint grassPaint;
+    private Paint waterPaint;
+
     private Matrix matrix = new Matrix();
     private Bitmap bitmap;
-    private SparseArray<Bitmap> sprites; // Improves performance by loading all the resources outside the draw loop
+    private SparseArray<Bitmap> sprites;
 
     private GameThread game;
     private LinkedList<GameObject> gameObjects;
@@ -50,11 +53,18 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         setFocusable(true);
 
         // Initialise the paint options
-        paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setFilterBitmap(true);
-        paint.setDither(true);
-        paint.setColor(ContextCompat.getColor(context, R.color.colorWater));
+        spritePaint = new Paint();
+        spritePaint.setAntiAlias(true);
+        spritePaint.setFilterBitmap(true);
+        spritePaint.setDither(true);
+        grassPaint = new Paint();
+        grassPaint.setFilterBitmap(true);
+        grassPaint.setDither(true);
+        grassPaint.setColor(ContextCompat.getColor(context, R.color.colorGrass));
+        waterPaint = new Paint();
+        waterPaint.setFilterBitmap(true);
+        waterPaint.setDither(true);
+        waterPaint.setColor(ContextCompat.getColor(context, R.color.colorWater));
 
         // Load all the resources we'll need to be drawing
         sprites = new SparseArray<>();
@@ -69,8 +79,9 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
         super.draw(canvas);
 
-        // Draw basic pond
-        canvas.drawRect(offset.x, offset.y, scale * gameSize.x + offset.x, scale * gameSize.y + offset.y, paint);
+        // Draw basic pond with grass margin
+        canvas.drawRect(0, 0, scale * screenWidth, scale* screenHeight, grassPaint);
+        canvas.drawRect(offset.x, offset.y, scale * gameSize.x + offset.x, scale * gameSize.y + offset.y, waterPaint);
 
         // Draw GameWorld objects with updated positions, dimensions etc.
         for (GameObject gameObject : gameObjects){
@@ -82,7 +93,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             matrix.postScale(spriteScale, spriteScale);
             matrix.postTranslate(gameObject.getPosition().x * scale + offset.x - middleCoord.x * spriteScale, gameObject.getPosition().y * scale + offset.y - middleCoord.y * spriteScale);
 
-            canvas.drawBitmap(bitmap, matrix, paint);
+            canvas.drawBitmap(bitmap, matrix, spritePaint);
         }
     }
 
