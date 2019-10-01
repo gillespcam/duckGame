@@ -12,6 +12,7 @@ public class Player extends ActiveGameObject {
     private float bounciness = 0.7F; // Fraction of speed the projectile conserves after a bounce collision
     private float friction = -0.9F;
     private float launchSpeed = 3F;
+    private float stopLimit = 0.2F;
 
     private PointF force = new PointF(0, 0); // Net force acting on projectile
     private PointF velocity = new PointF(0, 0); // Current velocity of projectile
@@ -25,6 +26,10 @@ public class Player extends ActiveGameObject {
 
     public void tick(double deltaTime) {
         if(launched){
+            if(velocity.x * velocity.x + velocity.y * velocity.y < stopLimit * stopLimit) { // if we're going below the lower speed limit
+                parent.playerStopped();
+                return;
+            }
             calculateTrajectory(deltaTime);
             boundaryCollision();
             objectCollion();

@@ -2,6 +2,7 @@ package com.example.duckgame;
 
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.util.Log;
 
 import java.lang.reflect.Constructor;
 import java.util.LinkedList;
@@ -14,6 +15,8 @@ public class GameWorld {
     private Goal primaryGoal; // The main goal object
     private PointF size; // The dimensions of the level in game units
     private int score = 0; // The current score of the level
+    private float scoreMult = 50000;
+    private int miniGoalsCollected = 0; // How many minor goals have been collected
 
     GameWorld(PointF levelSize) {
         size = levelSize;
@@ -57,6 +60,10 @@ public class GameWorld {
         float playerdistx = playerObject.getPosition().x - primaryGoal.getPosition().x;
         float playerdisty = playerObject.getPosition().y - primaryGoal.getPosition().y;
         float playerDist = (float)Math.sqrt(playerdistx * playerdistx + playerdisty * playerdisty);
+        float maxdist = (float)Math.sqrt(size.x * size.x + size.y * size.y);
+        score = Math.round(scoreMult * (1 + miniGoalsCollected) * (1 - playerDist / maxdist));
+        Log.i("SCORE", ": " + score);
+
     }
 
     public GameWorld clone(){
