@@ -155,9 +155,9 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
             Log.i(TAG, "MOVE" + event.getPointerCount());
             // if we currently have a launch motion in progress
-            if(launchInProgress){
+            if(!game.getPaused() && launchInProgress){
                 int pointer = event.findPointerIndex(0);
-                PointF aimGamePoint = new PointF(event.getX(pointer) / scale, event.getY(pointer) / scale);
+                PointF aimGamePoint = new PointF((event.getX(pointer) - offset.x) / scale, (event.getY(pointer) - offset.y) / scale);
                 game.aimPlayer(aimGamePoint);
                 return true;
             }
@@ -166,10 +166,12 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             // if we currently have a launch motion in progress
             if(launchInProgress){
                 launchInProgress = false;
-                // hopefully we don't need this, saving it for later though
-                // int pointer = event.findPointerIndex(0);
-                PointF launchGamePoint = new PointF(event.getX() / scale, event.getY() / scale);
-                game.launchPlayer(launchGamePoint);
+                if(!game.getPaused()){
+                    // hopefully we don't need this, saving it for later though
+                    // int pointer = event.findPointerIndex(0);
+                    PointF launchGamePoint = new PointF((event.getX() - offset.x) / scale, (event.getY() - offset.y) / scale);
+                    game.launchPlayer(launchGamePoint);
+                }
                 return true;
             }
         } else if(event.getAction() == MotionEvent.ACTION_POINTER_UP) {
@@ -177,10 +179,12 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             // if we currently have a launch motion in progress
             if(launchInProgress && (event.getActionIndex()) == 0){
                 launchInProgress = false;
-                // hopefully we don't need this, saving it for later though
-                //int pointer = event.findPointerIndex(0);
-                PointF launchGamePoint = new PointF(event.getX() / scale, event.getY() / scale);
-                game.launchPlayer(launchGamePoint);
+                if(!game.getPaused()){
+                    // hopefully we don't need this, saving it for later though
+                    //int pointer = event.findPointerIndex(0);
+                    PointF launchGamePoint = new PointF((event.getX() - offset.x) / scale, (event.getY() - offset.y) / scale);
+                    game.launchPlayer(launchGamePoint);
+                }
                 return true;
             }
         }
