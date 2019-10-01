@@ -7,7 +7,7 @@
          "level_names" array, and a reference in the "levels" array. -->
 
     <string-array name="level_names">
-        <item>"Level 0"</item>
+        <item>"Test Level Please Ignore"</item>
     </string-array>
     <array name="levels">
         <item>@array/level_0</item>

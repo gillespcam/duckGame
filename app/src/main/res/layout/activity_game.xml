@@ -14,24 +14,57 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/GameView"/>
+            android:id="@+id/GameView">
 
-        <LinearLayout
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/GameWidgets"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/GameWidgets">
+            android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/ButtonPause"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:background="@null"
-                android:onClick="onClickButtonPause"
-                android:scaleType="fitCenter"
-                android:src="@drawable/button_pause" />
+            <ImageView
+                android:id="@+id/pauseOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.5"
+                android:visibility="invisible"
+                app:srcCompat="@android:color/black" />
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/ButtonPause"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0"
+                    android:background="@null"
+                    android:onClick="onClickButtonPause"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/button_pause" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/ButtonBack"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"
+                    android:background="@null"
+                    android:onClick="onClickButtonBack"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/button_back"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </FrameLayout>
 

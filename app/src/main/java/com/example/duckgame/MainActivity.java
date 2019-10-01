@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClickButtonPlay(View view){
         Intent intent = new Intent(this, LevelsActivity.class);
         startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     public void onClickButtonScores(View view){

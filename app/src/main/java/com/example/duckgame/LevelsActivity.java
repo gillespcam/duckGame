@@ -44,6 +44,7 @@ public class LevelsActivity extends AppCompatActivity {
                 Intent intent = new Intent(parent.getContext(), GameActivity.class);
                 intent.putExtra("id", i);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         };
 
