@@ -40,7 +40,6 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="10dp"
-                    android:layout_weight="0"
                     android:background="@null"
                     android:onClick="onClickButtonPause"
                     android:scaleType="fitCenter"

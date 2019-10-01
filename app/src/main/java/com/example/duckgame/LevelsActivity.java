@@ -1,7 +1,6 @@
 package com.example.duckgame;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,8 +11,6 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.List;
 
 public class LevelsActivity extends AppCompatActivity {
 
@@ -49,5 +46,10 @@ public class LevelsActivity extends AppCompatActivity {
         };
 
         LevelList.setOnItemClickListener(onItemClickListener);
+    }
+
+    public void onClickButtonBack(View view) {
+        finish();
+        overridePendingTransition(0, 0);
     }
 }
