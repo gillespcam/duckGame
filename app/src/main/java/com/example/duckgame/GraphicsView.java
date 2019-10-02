@@ -68,8 +68,12 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
         // Load all the resources we'll need to be drawing
         sprites = new SparseArray<>();
-        sprites.put(R.drawable.goal,  BitmapFactory.decodeResource(getResources(),R.drawable.goal));
         sprites.put(R.drawable.player,  BitmapFactory.decodeResource(getResources(),R.drawable.player));
+        sprites.put(R.drawable.goal,  BitmapFactory.decodeResource(getResources(),R.drawable.goal));
+        sprites.put(R.drawable.bonus,  BitmapFactory.decodeResource(getResources(),R.drawable.bonus));
+        sprites.put(R.drawable.whirlpool,  BitmapFactory.decodeResource(getResources(),R.drawable.whirlpool));
+        sprites.put(R.drawable.oil,  BitmapFactory.decodeResource(getResources(),R.drawable.oil));
+        sprites.put(R.drawable.boat,  BitmapFactory.decodeResource(getResources(),R.drawable.boat));
     }
 
     @Override
