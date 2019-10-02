@@ -11,7 +11,8 @@ abstract class GameObject {
     protected float rotation;
     protected float scale;
 
-    public abstract boolean isColliding(GameObject object); // If the object is colliding with given object or not
+    public abstract boolean isCollidable(); // If a collision with the player would result in anything
+    public abstract void onCollision(Player player); // What to do if collided with player
     public abstract String getShape(); // The shape, hence type of collision checking the object uses
 
     public GameObject(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
@@ -53,5 +54,8 @@ abstract class GameObject {
 
     public float getScale() {
         return scale;
+    }
+    public void setScale(float scale) {
+        this.scale = scale;
     }
 }

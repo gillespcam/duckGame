@@ -51,7 +51,7 @@ public class GameWorld {
 
     public void addObject(GameObject obj) {
         if (obj instanceof Player) playerObject = (Player)obj;
-        if (obj instanceof Goal) primaryGoal = (Goal) obj;
+        if (obj instanceof Goal) primaryGoal = (Goal)obj;
         if (obj instanceof ActiveGameObject) activeObjects.add((ActiveGameObject)obj);
         objects.add(obj);
     }

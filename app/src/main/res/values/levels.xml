@@ -36,24 +36,30 @@
     <string-array name="level_0_types">
         <item>Player</item>
         <item>Goal</item>
+        <item>Oil</item>
     </string-array>
     <array name="level_0_sprites">
         <item>@drawable/player</item>
         <item>@drawable/goal</item>
+        <item>@drawable/oil</item>
     </array>
     <array name="level_0_x_positions">
         <item>2</item>
-        <item>13</item>
+        <item>14</item>
+        <item>8</item>
     </array>
     <array name="level_0_y_positions">
+        <item>4</item>
         <item>4</item>
         <item>4</item>
     </array>
     <array name="level_0_rotations">
         <item>0</item>
         <item>0</item>
+        <item>270</item>
     </array>
     <array name="level_0_scales">
+        <item>1</item>
         <item>1</item>
         <item>1</item>
     </array>

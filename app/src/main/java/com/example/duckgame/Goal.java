@@ -4,7 +4,8 @@ import android.graphics.PointF;
 
 public class Goal extends GameObject {
 
-    public boolean isColliding(GameObject object) { return false; }
+    public boolean isCollidable() { return false; }
+    public void onCollision(Player player) {}
     public String getShape() { return "CIRCLE"; }
 
     public Goal(GameWorld parent, int sprite, PointF position, float rotation, float scale){

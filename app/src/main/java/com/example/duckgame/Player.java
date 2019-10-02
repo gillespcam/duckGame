@@ -1,6 +1,7 @@
 package com.example.duckgame;
 
 import android.graphics.PointF;
+import android.util.Log;
 
 import java.util.LinkedList;
 
@@ -17,11 +18,16 @@ public class Player extends ActiveGameObject {
     private PointF force = new PointF(0, 0); // Net force acting on projectile
     private PointF velocity = new PointF(0, 0); // Current velocity of projectile
 
-    public boolean isColliding(GameObject object) { return false; }
+    public boolean isCollidable() { return false; }
+    public void onCollision(Player player) {}
     public String getShape() { return "CIRCLE"; }
 
     public Player(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
         super(parent, sprite, position, rotation, scale);
+    }
+
+    public Player clone(GameWorld parent, int sprite, PointF position, float rotation, float scale){
+        return new Player(parent, sprite, position, rotation, scale);
     }
 
     public void tick(double deltaTime) {
@@ -30,14 +36,12 @@ public class Player extends ActiveGameObject {
                 parent.playerStopped();
                 return;
             }
-            calculateTrajectory(deltaTime);
-            boundaryCollision();
-            objectCollion();
+            else {
+                calculateTrajectory(deltaTime);
+                boundaryCollision();
+                objectCollision();
+            }
         }
-    }
-
-    public Player clone(GameWorld parent, int sprite, PointF position, float rotation, float scale){
-        return new Player(parent, sprite, position, rotation, scale);
     }
 
     public void aim(PointF coords) {
@@ -56,7 +60,9 @@ public class Player extends ActiveGameObject {
     }
 
     private void calculateTrajectory(double deltaTime){
+        // Add friction force
         addForce(new PointF(velocity.x * friction, velocity.y * friction));
+
         velocity.x += (force.x / mass) * deltaTime;
         velocity.y += (force.y / mass) * deltaTime;
         force.x = 0;
@@ -94,16 +100,17 @@ public class Player extends ActiveGameObject {
         }
     }
 
-    private void objectCollion(){
-        LinkedList<GameObject> objs = parent.getObjects();
-        for(GameObject obj : objs) {
-            // If the projectile bounces off the object, handle that, otherwise ignore this object
-            if(isColliding(obj)){
+    private void objectCollision(){
+        LinkedList<GameObject> objects = parent.getObjects();
+        for(GameObject obj : objects) {
+            // If a collision with this object would result in anything
+            if(obj.isCollidable()){
                 PointF objpos = obj.getPosition();
                 float objrot = obj.getRotation();
                 float objscale = obj.getScale();
                 String shape = obj.getShape();
 
+                // Check if colliding
                 switch (shape){
                     case "CIRCLE":
                         float xdist = this.position.x - objpos.x;
@@ -112,24 +119,28 @@ public class Player extends ActiveGameObject {
                         float dsq = xdist * xdist + ydist * ydist;
                         // The sum of the radii of the circles: the minimum distance the circles can be apart without touching
                         float sumrads = (this.scale + objscale) / 2;
-                        if(dsq < sumrads * sumrads){
-                            float velangle = (float)Math.atan2(velocity.y, velocity.x);
 
-                            // Angle from ball to object - normal to plane of reflection
-                            float normangle = (float)Math.atan2(ydist, xdist);
-                            // Calculate reflected angle
-                            float newAngle = 2*normangle - velangle;
-
-                            float speed = (float)Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
-                            velocity.x += speed * bounciness * (float)Math.cos(newAngle);
-                            velocity.y += speed * bounciness * (float)Math.sin(newAngle);
-                        }
+                        // If colliding, call result of collision
+                        if(dsq < sumrads * sumrads) obj.onCollision(this);
                         break;
                     default:
-                        // simple square, no rotation consideration
+                        // Simple square, no rotation consideration
                         //...
                 }
             }
         }
+    }
+
+    /** Properties **/
+
+    public float getBounciness() {
+        return bounciness;
+    }
+
+    public PointF getVelocity() {
+        return velocity;
+    }
+    public void setVelocity(PointF velocity) {
+        this.velocity = velocity;
     }
 }
