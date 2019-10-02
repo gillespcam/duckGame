@@ -35,6 +35,7 @@ public class LevelBlueprint {
         TypedArray yPositions = context.getResources().obtainTypedArray(levelObjects.getResourceId(3,0));
         TypedArray rotations = context.getResources().obtainTypedArray(levelObjects.getResourceId(4,0));
         TypedArray scales = context.getResources().obtainTypedArray(levelObjects.getResourceId(5,0));
+        Player playerObject = null;
 
         // Instantiate and add all levelObjects to level
         for (int i = 0; i < types.length; ++i) {
@@ -53,13 +54,14 @@ public class LevelBlueprint {
                 int sprite = sprites.getResourceId(i, -1);
                 PointF position = new PointF(xPositions.getFloat(i, 0F), yPositions.getFloat(i, 0F));
                 float rotation = rotations.getFloat(i, 0F);
-                float scale = scales.getFloat(i, 0F);
+                float scale = scales.getFloat(i,0F);
                 Log.i(TAG, "GameObject " + i + " given sprite " + context.getResources().getResourceEntryName(sprite) +
                         ", position (" + position.x + "," + position.y + "), rotation " + rotation + ", and scale " + scale);
 
                 // Instantiate and add GameObject to level
                 GameObject obj = (GameObject)constructor.newInstance(level, sprite, position, rotation, scale);
-                level.addObject(obj);
+                if (obj instanceof Player) playerObject = (Player)obj;
+                else level.addObject(obj);
                 Log.i(TAG, "GameObject " + i + " added successfully to level!");
             }
             catch(ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
@@ -71,6 +73,8 @@ public class LevelBlueprint {
         yPositions.recycle();
         rotations.recycle();
         scales.recycle();
+
+        if (playerObject != null) level.addObject(playerObject);
     }
 
     public GameWorld createGameWorld() {
