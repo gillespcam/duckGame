@@ -36,6 +36,7 @@ public class GameThread extends Thread {
         this.levelBlueprint = levelBlueprint;
         // Create new world using given specifications by levelsBlueprint
         level = levelBlueprint.createGameWorld();
+        graphicsView.setGameWorld(level);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class GameThread extends Thread {
             try {
                 canvas = this.surfaceHolder.lockCanvas();
                 if (canvas == null) break;
-                level.draw(graphicsView, canvas);
+                graphicsView.draw(canvas);
                 surfaceHolder.unlockCanvasAndPost(canvas);
             } catch (IllegalArgumentException e) {
                 break;

@@ -221,7 +221,6 @@ public class Player extends ActiveGameObject {
     public float getBounciness() {
         return bounciness;
     }
-
     public PointF getVelocity() {
         return velocity;
     }
