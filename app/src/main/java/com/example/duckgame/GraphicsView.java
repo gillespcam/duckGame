@@ -30,6 +30,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     private Paint spritePaint;
     private Paint grassPaint;
+    private Paint shadePaint;
     private Paint waterPaint;
 
     private SparseArray<Bitmap> sprites;
@@ -56,6 +57,9 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         grassPaint = new Paint();
         grassPaint.setColor(ContextCompat.getColor(context, R.color.colorGrass));
 
+        shadePaint = new Paint();
+        shadePaint.setColor(ContextCompat.getColor(context, R.color.colorShade));
+
         waterPaint = new Paint();
         waterPaint.setColor(ContextCompat.getColor(context, R.color.colorWater));
 
@@ -78,7 +82,8 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
         // Draw Grass and Pond
         canvas.drawRect(0, 0, scale * screenWidth, scale * screenHeight, grassPaint);
-        canvas.drawRect(offset.x, offset.y, scale * worldSize.x + offset.x, scale * worldSize.y + offset.y, waterPaint);
+        canvas.drawRect(offset.x, offset.y, scale * worldSize.x + offset.x, scale * worldSize.y + offset.y, shadePaint);
+        canvas.drawRect(offset.x + margin, offset.y + margin, scale * worldSize.x + offset.x, scale * worldSize.y + offset.y, waterPaint);
 
         // Draw GameObjects
         for (GameObject obj : world.getObjects()) {

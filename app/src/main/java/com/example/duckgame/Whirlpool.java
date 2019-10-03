@@ -25,7 +25,7 @@ public class Whirlpool extends ActiveGameObject implements CollisionCircle{
     }
 
     public void tick(double deltaTime) {
-        if (tock == 60) tock = 0;
+        if (tock == revolutionTicks) tock = 0;
         setRotation(tock * degreesPerTick);
         tock++;
     }

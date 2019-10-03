@@ -7,8 +7,8 @@
          "level_names" array, and a reference in the "levels" array. -->
 
     <string-array name="level_names">
-        <item>"Test Level Please Ignore"</item>
-        <item>"Wall Testing"</item>
+        <item>"Wall you beat this level?"</item>
+        <item>"What a-Boat this one?"</item>
         <item>"A Whirly Good Time"</item>
     </string-array>
     <array name="levels">
@@ -40,35 +40,29 @@
     <string-array name="level_0_types">
         <item>Player</item>
         <item>Goal</item>
-        <item>Oil</item>
-        <item>Boat</item>
+        <item>Wall</item>
     </string-array>
     <array name="level_0_sprites">
         <item>@drawable/player</item>
         <item>@drawable/goal</item>
-        <item>@drawable/oil</item>
-        <item>@drawable/boat</item>
+        <item>@drawable/goal</item>
     </array>
     <array name="level_0_x_positions">
         <item>2</item>
         <item>14</item>
         <item>8</item>
-        <item>8</item>
     </array>
     <array name="level_0_y_positions">
         <item>4</item>
         <item>4</item>
-        <item>2</item>
-        <item>6</item>
+        <item>4</item>
     </array>
     <array name="level_0_rotations">
         <item>0</item>
         <item>0</item>
-        <item>270</item>
         <item>0</item>
     </array>
     <array name="level_0_scales">
-        <item>1</item>
         <item>1</item>
         <item>1</item>
         <item>1</item>
@@ -85,7 +79,7 @@
         <item>@array/level_0_size</item>
         <item>@array/level_0_objects</item>
     </array>
-
+    
     <!-- LEVEL 1 -->
 
     <array name="level_1_size">
@@ -95,12 +89,12 @@
     <string-array name="level_1_types">
         <item>Player</item>
         <item>Goal</item>
-        <item>Wall</item>
+        <item>Boat</item>
     </string-array>
     <array name="level_1_sprites">
         <item>@drawable/player</item>
         <item>@drawable/goal</item>
-        <item>@drawable/oil</item>
+        <item>@drawable/boat</item>
     </array>
     <array name="level_1_x_positions">
         <item>2</item>
@@ -110,12 +104,12 @@
     <array name="level_1_y_positions">
         <item>4</item>
         <item>4</item>
-        <item>4</item>
+        <item>0</item>
     </array>
     <array name="level_1_rotations">
         <item>0</item>
         <item>0</item>
-        <item>0</item>
+        <item>90</item>
     </array>
     <array name="level_1_scales">
         <item>1</item>

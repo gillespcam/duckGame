@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorWater">#2196F3</color>
-    <color name="colorGrass">#00574B</color>
+    <color name="colorShade">#186EAF</color>
+    <color name="colorGrass">#008763</color>
     <color name="colorGeneral">#000000</color>
 </resources>
