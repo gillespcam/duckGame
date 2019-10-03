@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.util.Log;
@@ -18,35 +17,27 @@ import android.view.SurfaceView;
 
 import androidx.core.content.ContextCompat;
 
-import java.util.LinkedList;
-
 public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback {
 
     private final String TAG = "GraphicsView";
 
+    private final float margin = 20F;
+
     private float screenWidth;
     private float screenHeight;
-    float scale;
+    private PointF offset = new PointF();
+    float scale = 0F;
 
     private Paint spritePaint;
     private Paint grassPaint;
     private Paint waterPaint;
-    private Paint generalPaint;
 
-    private Matrix matrix = new Matrix();
-    private Bitmap bitmap;
     private SparseArray<Bitmap> sprites;
 
     private GameThread game;
     private GameWorld world;
     private PointF worldSize;
-
-    private int pixmargin = 20;
-    private PointF offset = new PointF(0,0);
-
     private boolean launchInProgress = false;
-    private PointF aimPoint = new PointF();
-    private PointF launchPoint = new PointF();
 
     GraphicsView (Context context, LevelBlueprint levelBlueprint) {
         super(context);
@@ -61,17 +52,12 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         spritePaint.setAntiAlias(true);
         spritePaint.setFilterBitmap(true);
         spritePaint.setDither(true);
+
         grassPaint = new Paint();
-        grassPaint.setFilterBitmap(true);
-        grassPaint.setDither(true);
         grassPaint.setColor(ContextCompat.getColor(context, R.color.colorGrass));
+
         waterPaint = new Paint();
-        waterPaint.setFilterBitmap(true);
-        waterPaint.setDither(true);
         waterPaint.setColor(ContextCompat.getColor(context, R.color.colorWater));
-        generalPaint = new Paint();
-        generalPaint.setColor(ContextCompat.getColor(context, R.color.colorGeneral));
-        generalPaint.setStrokeWidth(20F);
 
         // Load all the resources we'll need to be drawing
         sprites = new SparseArray<>();
@@ -129,20 +115,20 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        screenWidth = width - 2 * pixmargin;
-        screenHeight = height - 2 * pixmargin;
+        screenWidth = width - 2 * margin;
+        screenHeight = height - 2 * margin;
 
         float xscale = screenWidth / worldSize.x;
         float yscale = screenHeight / worldSize.y;
 
         if(xscale < yscale){
             scale = xscale;
-            offset.y = (screenHeight - worldSize.y * xscale) / 2 + pixmargin;
-            offset.x = pixmargin;
+            offset.y = (screenHeight - worldSize.y * xscale) / 2 + margin;
+            offset.x = margin;
         } else {
             scale = yscale;
-            offset.x = (screenWidth - worldSize.x * yscale) / 2 + pixmargin;
-            offset.y = pixmargin;
+            offset.x = (screenWidth - worldSize.x * yscale) / 2 + margin;
+            offset.y = margin;
         }
     }
 
@@ -166,48 +152,50 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
     public boolean onTouchEvent(MotionEvent event){
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             Log.i(TAG, "DOWN");
-            // if we're not paused or launched, we can start the launch procedure
+            // If we're not paused or launched, we can start the launch procedure
             if(!game.getPaused() && !game.getLaunched()){
                 // no launch motion currently in progress
-                if(!launchInProgress) {
-                    launchInProgress = true;
-                }
+                if(!launchInProgress) launchInProgress = true;
                 int pointer = event.findPointerIndex(0);
-                aimPoint = new PointF(event.getX(pointer), event.getY(pointer));
+                PointF aimPoint = new PointF(event.getX(pointer), event.getY(pointer));
+                // Aim with aimPoint in game units
                 game.aimPlayer(new PointF((aimPoint.x - offset.x) / scale, (aimPoint.y - offset.y) / scale));
                 return true;
             }
         } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
             Log.i(TAG, "MOVE" + event.getPointerCount());
-            // if we currently have a launch motion in progress
+            // If we currently have a launch motion in progress
             if(!game.getPaused() && launchInProgress){
                 int pointer = event.findPointerIndex(0);
-                aimPoint = new PointF(event.getX(pointer), event.getY(pointer));
+                PointF aimPoint = new PointF(event.getX(pointer), event.getY(pointer));
+                // Aim with aimPoint in game units
                 game.aimPlayer(new PointF((aimPoint.x - offset.x) / scale, (aimPoint.y - offset.y) / scale));
                 return true;
             }
         } else if(event.getAction() == MotionEvent.ACTION_UP) {
             Log.i(TAG, "UP" + event.getPointerCount());
-            // if we currently have a launch motion in progress
+            // If we currently have a launch motion in progress
             if(launchInProgress){
                 launchInProgress = false;
                 if(!game.getPaused()){
                     // hopefully we don't need this, saving it for later though
                     // int pointer = event.findPointerIndex(0);
-                    launchPoint = new PointF(event.getX(), event.getY());
+                    PointF launchPoint = new PointF(event.getX(), event.getY());
+                    // Launch with launchPoint in game units
                     game.launchPlayer(new PointF((event.getX() - offset.x) / scale, (event.getY() - offset.y) / scale));
                 }
                 return true;
             }
         } else if(event.getAction() == MotionEvent.ACTION_POINTER_UP) {
             Log.i(TAG, "POINTERUP" + event.getPointerCount());
-            // if we currently have a launch motion in progress
+            // If we currently have a launch motion in progress
             if(launchInProgress && (event.getActionIndex()) == 0){
                 launchInProgress = false;
                 if(!game.getPaused()){
                     // hopefully we don't need this, saving it for later though
                     //int pointer = event.findPointerIndex(0);
-                    launchPoint = new PointF(event.getX(), event.getY());
+                    PointF launchPoint = new PointF(event.getX(), event.getY());
+                    // Launch with launchPoint in game units
                     game.launchPlayer(new PointF((event.getX() - offset.x) / scale, (event.getY() - offset.y) / scale));
                 }
                 return true;

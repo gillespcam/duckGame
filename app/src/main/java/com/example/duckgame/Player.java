@@ -7,24 +7,24 @@ import java.util.LinkedList;
 
 public class Player extends ActiveGameObject {
 
-    private boolean launched = false;
+    private final String TAG = "Player";
 
-    private float mass = 1; // How much forces affect the change in velocity of the projectile
+    private boolean launched = false; // Whether the player has launched yet or not
+
+    private float mass = 1; // How much force affects the change in velocity of the player
     private float bounciness = 0.7F; // Fraction of speed the projectile conserves after a bounce collision
-    private float friction = -0.9F;
-    private float launchSpeed = 3F;
-    private float stopLimit = 0.2F;
+    private float friction = -0.9F; // Fraction of current velocity lost each tick
+    private float launchSpeed = 3F; // Initial launch speed multiplier
+    private float stopLimit = 0.2F; // Speed the player has to be going under for the level to be considered finished
 
     private PointF force = new PointF(0, 0); // Net force acting on projectile
     private PointF velocity = new PointF(0, 0); // Current velocity of projectile
 
-    public boolean isCollidable() { return false; }
-    public void onCollision(Player player) {}
-    public String getShape() { return "CIRCLE"; }
-
-    public Player(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
+    public Player(GameWorld parent, int sprite, PointF position, float rotation, float scale){
         super(parent, sprite, position, rotation, scale);
     }
+
+    /** ActiveGameObject **/
 
     public Player clone(GameWorld parent, int sprite, PointF position, float rotation, float scale){
         return new Player(parent, sprite, position, rotation, scale);
@@ -32,12 +32,14 @@ public class Player extends ActiveGameObject {
 
     public void tick(double deltaTime) {
         if(launched){
-            if(velocity.x * velocity.x + velocity.y * velocity.y < stopLimit * stopLimit) { // if we're going below the lower speed limit
+            /* After launching, if under stopLimit then
+               halt collision and trajectory calculations */
+            if(velocity.length() < stopLimit){
                 parent.playerStopped();
                 launched = false;
                 return;
             }
-            else {
+            else{
                 calculateTrajectory(deltaTime);
                 boundaryCollision();
                 objectCollision();
@@ -45,7 +47,14 @@ public class Player extends ActiveGameObject {
         }
     }
 
-    public void aim(PointF coords) {
+    /** Public Methods **/
+
+    public void addForce(PointF vector){
+        force.x += vector.x;
+        force.y += vector.y;
+    }
+
+    public void aim(PointF coords){
         rotation = (float) Math.toDegrees(Math.atan2((coords.y - position.y), (coords.x - position.x)));
     }
 
@@ -55,10 +64,7 @@ public class Player extends ActiveGameObject {
         launched = true;
     }
 
-    public void addForce(PointF vector) {
-        force.x += vector.x;
-        force.y += vector.y;
-    }
+    /** Private Methods **/
 
     private void calculateTrajectory(double deltaTime){
         // Add friction force
@@ -102,129 +108,96 @@ public class Player extends ActiveGameObject {
     }
 
     private void objectCollision(){
-        LinkedList<GameObject> objects = parent.getObjects();
-        for(GameObject obj : objects) {
-            // Circle collision
-            if(obj instanceof CollisionCircle) {
-                float objrad = ((CollisionCircle) obj).getRadius();
-                PointF objpos = ((CollisionCircle) obj).getCentre();
-                float xdist = this.position.x - objpos.x;
-                float ydist = this.position.y - objpos.y;
-                // Use the square of the distances, so we don't have to square root
-                float dsq = xdist * xdist + ydist * ydist;
-                // The sum of the radii of the circles: the minimum distance the circles can be apart without touching
-                float sumrads = this.scale / 2 + objrad;
-
-                // If colliding, reflect the velocity along the tangent to the circle
-                if(dsq < sumrads * sumrads) {
-                    float velAngle = (float)Math.atan2(velocity.y, velocity.x);
-                    // Angle from ball to object: normal to plane of reflection
-                    float normAngle = (float)Math.atan2(ydist, xdist);
-                    // Calculate reflected angle
-                    float newAngle = 2*normAngle - velAngle;
-
-                    // Calculate reflected velocity
-                    float speed = (float)Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
-                    velocity.x = speed * bounciness * (float)Math.cos(newAngle);
-                    velocity.y = speed * bounciness * (float)Math.sin(newAngle);
-                }
-            }
-            if (obj instanceof CollisionRectangle) {
-                bounceRectangle((CollisionRectangle) obj);
-            }
-
-//            if(obj.isCollidable()){
-//                PointF objpos = obj.getPosition();
-//                float objrot = obj.getRotation();
-//                float objscale = obj.getScale();
-//                String shape = obj.getShape();
-//
-//                // Check if colliding
-//                switch (shape){
-//                    case "CIRCLE":
-//                        float xdist = this.position.x - objpos.x;
-//                        float ydist = this.position.y - objpos.y;
-//                        // Use the square of the distances, so we don't have to square root
-//                        float dsq = xdist * xdist + ydist * ydist;
-//                        // The sum of the radii of the circles: the minimum distance the circles can be apart without touching
-//                        float sumrads = (this.scale + objscale) / 2;
-//
-//                        // If colliding, call result of collision
-//                        if(dsq < sumrads * sumrads) obj.onCollision(this);
-//                        break;
-//                    default:
-//                        // Simple square, no rotation consideration
-//                        //...
-//                }
-//            }
+        LinkedList<GameObject> gameObjects = parent.getObjects();
+        for(GameObject obj : gameObjects){
+            if( obj instanceof CollisionCircle) handleCircle((CollisionCircle)obj);
+            if (obj instanceof CollisionRectangle) handleRectangle((CollisionRectangle)obj);
         }
     }
 
-    private void bounceRectangle(CollisionRectangle obj){
-        PointF objpos = obj.getPosition();
-        float objHeight = obj.getHeight();
+    public void handleCircle(CollisionCircle obj){
+        PointF objPos = obj.getCentre();
+        float objRad = obj.getRadius();
+        float xDist = this.position.x - objPos.x;
+        float yDist = this.position.y - objPos.y;
+        float dsq = xDist * xDist + yDist * yDist;
+        float sumrads = this.scale / 2 + objRad;
+
+        // If the player is too far away to collide, we do nothing
+        if (!(dsq < sumrads * sumrads)) return;
+        /*if (!(r)) return;*/
+
+        Log.i(TAG + "/Collision", "Circle");
+
+        // Does player reflect upon collision with this object?
+        if (obj.reflectUponCollision()) {
+            // Angle of velocity from center of player
+            float velAngle = (float)Math.atan2(velocity.y, velocity.x);
+            // Angle from ball to object: normal to plane of reflection
+            float normAngle = (float)Math.atan2(yDist, xDist);
+            // Calculate reflected angle
+            float newAngle = 2*normAngle - velAngle;
+            // Calculate reflected velocity
+            float speed = (float)Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
+            velocity.x = speed * bounciness * (float)Math.cos(newAngle);
+            velocity.y = speed * bounciness * (float)Math.sin(newAngle);
+        }
+    }
+
+    public void handleRectangle(CollisionRectangle obj){
+        PointF objPos = obj.getPosition();
         float objWidth = obj.getWidth();
+        float objHeight = obj.getHeight();
+        float xdist = Math.abs(this.position.x - objPos.x);
+        float ydist = Math.abs(this.position.y - objPos.y);
 
-        float xdist = Math.abs(this.position.x - objpos.x);
-        float ydist = Math.abs(this.position.y - objpos.y);
+        // If the player is too far away to collide, we do nothing
+        if(xdist  > (objWidth + scale) / 2 || ydist  > (objHeight + scale) / 2 ) return;
 
-        // if the circle is too far away to collide, we do nothing
-        if(xdist  > (objWidth + scale) / 2 ) return;
-        if(ydist  > (objHeight + scale) / 2 ) return;
+        Log.i(TAG + "/Collision", "Rectangle");
 
-        Log.i("COLLIDE", "rectangle");
+        // Does player reflect upon collision with this object?
+        if(obj.reflectUponCollision()){
+            // Gradient of the diagonal of the rectangle, used to determine which edge to snap to if the point is inside the rectangle
+            float diagGrad = objHeight / objWidth;
+            // Edge collisions, where the player is away from the corners
+            // Top edge
+            if(xdist <= objWidth / 2 && position.y > objPos.y + xdist * diagGrad) {
+                position.y = objPos.y + (objHeight + scale )/ 2;
+                velocity.y = Math.abs(velocity.y);
+                velocity.x *= bounciness;
+                velocity.y *= bounciness;
+                return; }
+            // Bottom edge
+            if(xdist <= objWidth / 2 && position.y < objPos.y - xdist * diagGrad) {
+                position.y = objPos.y - (objHeight + scale )/ 2;
+                velocity.y = -Math.abs(velocity.y);
+                velocity.x *= bounciness;
+                velocity.y *= bounciness;
+                return; }
+            // Right edge
+            if(ydist <= objHeight / 2 && position.x > objPos.x + ydist / diagGrad) {
+                position.x = objPos.x + (objWidth + scale )/ 2;
+                velocity.x = Math.abs(velocity.y);
+                velocity.x *= bounciness;
+                velocity.y *= bounciness;
+                return; }
+            // Left edge
+            if(ydist <= objHeight / 2 && position.x < objPos.x - ydist / diagGrad) {
+                position.x = objPos.x - (objWidth + scale )/ 2;
+                velocity.x = -Math.abs(velocity.x);
+                velocity.x *= bounciness;
+                velocity.y *= bounciness;
+                return; }
 
-        // gradient of the diagonal of the rectangle, used to determine which edge to snap to if the point is inside the rectangle
-        float diagGrad = objHeight / objWidth;
-
-        // edge collisions, where the player is away from the corners
-        // top edge
-        if(xdist <= objWidth / 2 && position.y > objpos.y + xdist * diagGrad) {
-            position.y = objpos.y + (objHeight + scale )/ 2;
-            velocity.y = Math.abs(velocity.y);
-            velocity.x *= bounciness;
-            velocity.y *= bounciness;
-            return;
+            // TODO: Corners
+            //...
         }
-        // bottom edge
-        if(xdist <= objWidth / 2 && position.y < objpos.y - xdist * diagGrad) {
-            position.y = objpos.y - (objHeight + scale )/ 2;
-            velocity.y = -Math.abs(velocity.y);
-            velocity.x *= bounciness;
-            velocity.y *= bounciness;
-            return;
-        }
-        // right edge
-        if(ydist <= objHeight / 2 && position.x > objpos.x + ydist / diagGrad) {
-            position.x = objpos.x + (objWidth + scale )/ 2;
-            velocity.x = Math.abs(velocity.y);
-            velocity.x *= bounciness;
-            velocity.y *= bounciness;
-            return;
-        }
-        // left edge
-        if(ydist <= objHeight / 2 && position.x < objpos.x - ydist / diagGrad) {
-            position.x = objpos.x - (objWidth + scale )/ 2;
-            velocity.x = -Math.abs(velocity.x);
-            velocity.x *= bounciness;
-            velocity.y *= bounciness;
-            return;
-        }
-
-        // TODO: Corners
-
-
     }
 
     /** Properties **/
 
-    public float getBounciness() {
-        return bounciness;
-    }
     public PointF getVelocity() {
         return velocity;
-    }
-    public void setVelocity(PointF velocity) {
-        this.velocity = velocity;
     }
 }

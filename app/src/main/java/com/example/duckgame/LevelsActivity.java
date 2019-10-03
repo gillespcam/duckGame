@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LevelsActivity extends AppCompatActivity {
 
+    private final String TAG = "LevelsActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

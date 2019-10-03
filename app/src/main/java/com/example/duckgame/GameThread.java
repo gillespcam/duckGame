@@ -18,11 +18,11 @@ public class GameThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private GraphicsView graphicsView;
     private LevelBlueprint levelBlueprint;
-    public static Canvas canvas;
+    private static Canvas canvas;
 
-    private boolean running;
-    private boolean paused;
-    private boolean launched = false;
+    private boolean running; // Whether the thread is running or not
+    private boolean paused; // Whether the game is ticking or not
+    private boolean launched = false; // Whether the player has launched yet or not
     private long prevTime; // Previous recorded time in nanoseconds
     private long deltaTime; // Difference between previous recorded time and current time in nanoseconds
     private int framesSkipped; // Amount of drawing frames that have been skipped to update level objects

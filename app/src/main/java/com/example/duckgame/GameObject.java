@@ -1,6 +1,5 @@
 package com.example.duckgame;
 
-import android.graphics.Bitmap;
 import android.graphics.PointF;
 
 abstract class GameObject {

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ScoresActivity extends AppCompatActivity {
 
+    private final String TAG = "ScoresActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

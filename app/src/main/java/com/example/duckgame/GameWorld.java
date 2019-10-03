@@ -7,14 +7,19 @@ import java.util.LinkedList;
 
 public class GameWorld {
 
+    private final String TAG = "GameWorld";
+
+    private final float MAX_SCORE = 50000; // The max score of the world
+
+    private PointF size; // The dimensions of the world in game units
     private LinkedList<GameObject> objects = new LinkedList<>(); // All the objects in the level
     private LinkedList<ActiveGameObject> activeObjects = new LinkedList<>(); // All objects that need updating
-    private Player player; // The player object
+
+    private Player player; // The main player object
     private Goal goal; // The main goal object
-    private PointF size; // The dimensions of the level in game units
-    private int score = 0; // The current score of the level
-    private float scoreMult = 50000;
-    private int miniGoalsCollected = 0; // How many minor goals have been collected
+
+    private int score = 0; // The current score of the world
+    private int bonuses = 0; // Amount of bonuses collected
 
     GameWorld(PointF levelSize) {
         size = levelSize;
@@ -54,7 +59,7 @@ public class GameWorld {
         float playerdisty = player.getPosition().y - goal.getPosition().y;
         float playerDist = (float)Math.sqrt(playerdistx * playerdistx + playerdisty * playerdisty);
         float maxdist = (float)Math.sqrt(size.x * size.x + size.y * size.y);
-        score = Math.round(scoreMult * (1 + miniGoalsCollected) * (1 - playerDist / maxdist));
+        score = Math.round(MAX_SCORE * (1 + bonuses) * (1 - playerDist / maxdist));
         Log.i("SCORE", ": " + score);
 
     }
