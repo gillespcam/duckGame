@@ -131,7 +131,7 @@ public class Player extends ActiveGameObject {
         Log.i(TAG + "/Collision", "Circle");
 
         // Does player reflect upon collision with this object?
-        if (obj.reflectUponCollision()) {
+        if (obj.onCollision()) {
             // Angle of velocity from center of player
             float velAngle = (float)Math.atan2(velocity.y, velocity.x);
             // Angle from ball to object: normal to plane of reflection
@@ -158,7 +158,7 @@ public class Player extends ActiveGameObject {
         Log.i(TAG + "/Collision", "Rectangle");
 
         // Does player reflect upon collision with this object?
-        if(obj.reflectUponCollision()){
+        if(obj.onCollision()){
             // Gradient of the diagonal of the rectangle, used to determine which edge to snap to if the point is inside the rectangle
             float diagGrad = objHeight / objWidth;
             // Edge collisions, where the player is away from the corners

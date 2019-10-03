@@ -7,5 +7,7 @@ public interface CollisionCircle {
     PointF getPosition(); // Position of the circle in game units
     float getRadius(); // Radius of the circle in game units
 
-    boolean reflectUponCollision(); // The player responds to collision
+    /* Returns true if collision results in player being reflected.
+       Returns false if collision result is handled by object */
+    boolean onCollision();
 }

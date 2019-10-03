@@ -25,10 +25,14 @@ public class Oil extends GameObject implements CollisionCircle{
     public float getRadius(){ return scale / 2; }
 
     @Override
-    public boolean reflectUponCollision(){
+    public boolean onCollision(){
         Player player = parent.getPlayer();
+
         PointF velocity = player.getVelocity();
-        PointF force = new PointF(velocity.x * slipperyness, velocity.y * slipperyness);
+        PointF force = new PointF(
+                velocity.x * slipperyness,
+                velocity.y * slipperyness);
+
         player.addForce(force);
 
         // Own actions taken

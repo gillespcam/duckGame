@@ -10,5 +10,7 @@ public interface CollisionRectangle {
     float getWidth(); // Width of the rectangle
     float getHeight(); // Height of the rectangle
 
-    boolean reflectUponCollision(); // The player responds to collision
+    /* Returns true if collision results in player being reflected.
+       Returns false if collision result is handled by object */
+    boolean onCollision();
 }

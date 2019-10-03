@@ -52,7 +52,7 @@ public class Wall extends GameObject implements CollisionRectangle {
     }
 
     @Override
-    public boolean reflectUponCollision(){
+    public boolean onCollision(){
         // Actions taken by player
         return true;
     }

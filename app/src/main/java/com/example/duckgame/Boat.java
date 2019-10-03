@@ -28,7 +28,7 @@ public class Boat extends ActiveGameObject implements CollisionRectangle {
     public float getHeight() { return scale / 2; }
 
     @Override
-    public boolean reflectUponCollision(){
+    public boolean onCollision(){
         // Actions taken by player
         return true;
     }
