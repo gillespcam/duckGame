@@ -2,7 +2,7 @@ package com.example.duckgame;
 
 import android.graphics.PointF;
 
-/** Immobile object that reflects the player away on collision **/
+/** Wall - Immobile object that reflects the player away on collision **/
 public class Wall extends GameObject implements CollisionRectangle {
 
     private final String TAG = "Wall";

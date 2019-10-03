@@ -78,15 +78,12 @@ public class GameThread extends Thread {
         launched = true;
         level.launchPlayer(coords);
     }
-
     public void aimPlayer(PointF coords){
         level.aimPlayer(coords);
     }
 
     public void pauseGame(){paused = true;}
     public void resumeGame(){paused = false;}
-
-
 
     /** Properties **/
 

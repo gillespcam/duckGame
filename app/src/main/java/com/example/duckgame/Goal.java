@@ -2,7 +2,7 @@ package com.example.duckgame;
 
 import android.graphics.PointF;
 
-/** Marker indicating where the player needs to aim to get **/
+/** Goal - Marker indicating where the player needs to aim to get **/
 public class Goal extends GameObject {
 
     private final String TAG = "Goal";

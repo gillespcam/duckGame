@@ -4,7 +4,8 @@ import android.graphics.PointF;
 
 public interface CollisionCircle {
 
+    PointF getPosition(); // Position of the circle in game units
     float getRadius(); // Radius of the circle in game units
-    PointF getCentre(); // Centre of the circle from top left of the sprite
+
     boolean reflectUponCollision(); // The player responds to collision
 }

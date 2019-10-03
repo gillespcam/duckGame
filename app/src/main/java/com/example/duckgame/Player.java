@@ -110,22 +110,23 @@ public class Player extends ActiveGameObject {
     private void objectCollision(){
         LinkedList<GameObject> gameObjects = parent.getObjects();
         for(GameObject obj : gameObjects){
-            if( obj instanceof CollisionCircle) handleCircle((CollisionCircle)obj);
+            if (obj instanceof CollisionCircle) handleCircle((CollisionCircle)obj);
             if (obj instanceof CollisionRectangle) handleRectangle((CollisionRectangle)obj);
         }
     }
 
-    public void handleCircle(CollisionCircle obj){
-        PointF objPos = obj.getCentre();
+    private void handleCircle(CollisionCircle obj){
+        PointF objPos = obj.getPosition();
         float objRad = obj.getRadius();
-        float xDist = this.position.x - objPos.x;
-        float yDist = this.position.y - objPos.y;
-        float dsq = xDist * xDist + yDist * yDist;
-        float sumrads = this.scale / 2 + objRad;
+        float xDist = position.x - objPos.x;
+        float yDist = position.y - objPos.y;
+        float Dist = (float)Math.sqrt(xDist * xDist + yDist * yDist);
+        float radSum = (scale / 2) + objRad;
+
+        Log.i(TAG + "/Collision", Dist + " > " + radSum);
 
         // If the player is too far away to collide, we do nothing
-        if (!(dsq < sumrads * sumrads)) return;
-        /*if (!(r)) return;*/
+        if (Dist > radSum) return;
 
         Log.i(TAG + "/Collision", "Circle");
 
@@ -144,7 +145,7 @@ public class Player extends ActiveGameObject {
         }
     }
 
-    public void handleRectangle(CollisionRectangle obj){
+    private void handleRectangle(CollisionRectangle obj){
         PointF objPos = obj.getPosition();
         float objWidth = obj.getWidth();
         float objHeight = obj.getHeight();
