@@ -89,15 +89,25 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
         // Draw GameWorld objects with updated positions, dimensions etc.
         for (GameObject gameObject : gameObjects){
-            bitmap = sprites.get(gameObject.getSprite());
-            float spriteScale = gameObject.getScale() * scale / bitmap.getWidth();
-            PointF middleCoord = new PointF(bitmap.getWidth() / 2F, bitmap.getHeight() / 2F);
+            if(gameObject instanceof Wall) {
 
-            matrix.setRotate(gameObject.getRotation(), middleCoord.x, middleCoord.y );
-            matrix.postScale(spriteScale, spriteScale);
-            matrix.postTranslate(gameObject.getPosition().x * scale + offset.x - middleCoord.x * spriteScale, gameObject.getPosition().y * scale + offset.y - middleCoord.y * spriteScale);
+                canvas.drawRect(
+                        offset.x + scale * ((Wall) gameObject).getCorners()[0].x,
+                        offset.y + scale * ((Wall) gameObject).getCorners()[0].y,
+                        offset.x + scale * ((Wall) gameObject).getCorners()[2].x,
+                        offset.y + scale * ((Wall) gameObject).getCorners()[2].y,
+                        grassPaint
+                );
+            } else {
+                bitmap = sprites.get(gameObject.getSprite());
+                float spriteScale = gameObject.getScale() * scale / bitmap.getWidth();
+                PointF middleCoord = new PointF(bitmap.getWidth() / 2F, bitmap.getHeight() / 2F);
 
-            canvas.drawBitmap(bitmap, matrix, spritePaint);
+                matrix.setRotate(gameObject.getRotation(), middleCoord.x, middleCoord.y );
+                matrix.postScale(spriteScale, spriteScale);
+                matrix.postTranslate(gameObject.getPosition().x * scale + offset.x - middleCoord.x * spriteScale, gameObject.getPosition().y * scale + offset.y - middleCoord.y * spriteScale);
+                canvas.drawBitmap(bitmap, matrix, spritePaint);
+            }
         }
     }
 

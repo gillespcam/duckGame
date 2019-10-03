@@ -2,7 +2,7 @@ package com.example.duckgame;
 
 import android.graphics.PointF;
 
-public class Boat extends ActiveGameObject {
+public class Boat extends ActiveGameObject implements CollisionRectangle {
 
     public boolean isCollidable() { return true; }
     public void onCollision(Player player) {
@@ -27,7 +27,16 @@ public class Boat extends ActiveGameObject {
 
         player.setVelocity(velocity);*/
     }
-    public String getShape() { return "CIRCLE"; }
+
+    @Override
+    public float getWidth() {
+        return scale;
+    }
+
+    @Override
+    public float getHeight() {
+        return scale / 2;
+    }
 
     public Boat(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
         super(parent, sprite, position, rotation, scale);

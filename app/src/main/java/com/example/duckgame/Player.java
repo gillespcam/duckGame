@@ -34,6 +34,7 @@ public class Player extends ActiveGameObject {
         if(launched){
             if(velocity.x * velocity.x + velocity.y * velocity.y < stopLimit * stopLimit) { // if we're going below the lower speed limit
                 parent.playerStopped();
+                launched = false;
                 return;
             }
             else {
@@ -103,32 +104,116 @@ public class Player extends ActiveGameObject {
     private void objectCollision(){
         LinkedList<GameObject> objects = parent.getObjects();
         for(GameObject obj : objects) {
-            // If a collision with this object would result in anything
-            if(obj.isCollidable()){
-                PointF objpos = obj.getPosition();
-                float objrot = obj.getRotation();
-                float objscale = obj.getScale();
-                String shape = obj.getShape();
+            // Circle collision
+            if(obj instanceof CollisionCircle) {
+                float objrad = ((CollisionCircle) obj).getRadius();
+                PointF objpos = ((CollisionCircle) obj).getCentre();
+                float xdist = this.position.x - objpos.x;
+                float ydist = this.position.y - objpos.y;
+                // Use the square of the distances, so we don't have to square root
+                float dsq = xdist * xdist + ydist * ydist;
+                // The sum of the radii of the circles: the minimum distance the circles can be apart without touching
+                float sumrads = this.scale / 2 + objrad;
 
-                // Check if colliding
-                switch (shape){
-                    case "CIRCLE":
-                        float xdist = this.position.x - objpos.x;
-                        float ydist = this.position.y - objpos.y;
-                        // Use the square of the distances, so we don't have to square root
-                        float dsq = xdist * xdist + ydist * ydist;
-                        // The sum of the radii of the circles: the minimum distance the circles can be apart without touching
-                        float sumrads = (this.scale + objscale) / 2;
+                // If colliding, reflect the velocity along the tangent to the circle
+                if(dsq < sumrads * sumrads) {
+                    float velAngle = (float)Math.atan2(velocity.y, velocity.x);
+                    // Angle from ball to object: normal to plane of reflection
+                    float normAngle = (float)Math.atan2(ydist, xdist);
+                    // Calculate reflected angle
+                    float newAngle = 2*normAngle - velAngle;
 
-                        // If colliding, call result of collision
-                        if(dsq < sumrads * sumrads) obj.onCollision(this);
-                        break;
-                    default:
-                        // Simple square, no rotation consideration
-                        //...
+                    // Calculate reflected velocity
+                    float speed = (float)Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
+                    velocity.x = speed * bounciness * (float)Math.cos(newAngle);
+                    velocity.y = speed * bounciness * (float)Math.sin(newAngle);
                 }
             }
+            if (obj instanceof CollisionRectangle) {
+                bounceRectangle((CollisionRectangle) obj);
+            }
+
+//            if(obj.isCollidable()){
+//                PointF objpos = obj.getPosition();
+//                float objrot = obj.getRotation();
+//                float objscale = obj.getScale();
+//                String shape = obj.getShape();
+//
+//                // Check if colliding
+//                switch (shape){
+//                    case "CIRCLE":
+//                        float xdist = this.position.x - objpos.x;
+//                        float ydist = this.position.y - objpos.y;
+//                        // Use the square of the distances, so we don't have to square root
+//                        float dsq = xdist * xdist + ydist * ydist;
+//                        // The sum of the radii of the circles: the minimum distance the circles can be apart without touching
+//                        float sumrads = (this.scale + objscale) / 2;
+//
+//                        // If colliding, call result of collision
+//                        if(dsq < sumrads * sumrads) obj.onCollision(this);
+//                        break;
+//                    default:
+//                        // Simple square, no rotation consideration
+//                        //...
+//                }
+//            }
         }
+    }
+
+    private void bounceRectangle(CollisionRectangle obj){
+        PointF objpos = obj.getPosition();
+        float objHeight = obj.getHeight();
+        float objWidth = obj.getWidth();
+
+        float xdist = Math.abs(this.position.x - objpos.x);
+        float ydist = Math.abs(this.position.y - objpos.y);
+
+        // if the circle is too far away to collide, we do nothing
+        if(xdist  > (objWidth + scale) / 2 ) return;
+        if(ydist  > (objHeight + scale) / 2 ) return;
+
+        Log.i("COLLIDE", "rectangle");
+
+        // gradient of the diagonal of the rectangle, used to determine which edge to snap to if the point is inside the rectangle
+        float diagGrad = objHeight / objWidth;
+
+        // edge collisions, where the player is away from the corners
+        // top edge
+        if(xdist <= objWidth / 2 && position.y > objpos.y + xdist * diagGrad) {
+            position.y = objpos.y + (objHeight + scale )/ 2;
+            velocity.y = Math.abs(velocity.y);
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
+            return;
+        }
+        // bottom edge
+        if(xdist <= objWidth / 2 && position.y < objpos.y - xdist * diagGrad) {
+            position.y = objpos.y - (objHeight + scale )/ 2;
+            velocity.y = -Math.abs(velocity.y);
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
+            return;
+        }
+        // right edge
+        if(ydist <= objHeight / 2 && position.x > objpos.x + ydist / diagGrad) {
+            position.x = objpos.x + (objWidth + scale )/ 2;
+            velocity.x = Math.abs(velocity.y);
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
+            return;
+        }
+        // left edge
+        if(ydist <= objHeight / 2 && position.x < objpos.x - ydist / diagGrad) {
+            position.x = objpos.x - (objWidth + scale )/ 2;
+            velocity.x = -Math.abs(velocity.x);
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
+            return;
+        }
+
+        // TODO: Corners
+
+
     }
 
     /** Properties **/
