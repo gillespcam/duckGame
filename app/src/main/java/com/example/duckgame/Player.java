@@ -267,4 +267,8 @@ public class Player extends ActiveGameObject {
     public PointF getVelocity() {
         return velocity;
     }
+
+    public void setLaunched(boolean launched) {
+        this.launched = launched;
+    }
 }

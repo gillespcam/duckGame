@@ -44,6 +44,10 @@ public class GameWorld {
         player.launch(coords);
     }
 
+    public void unLaunch(){
+        gameThread.setLaunched(false);
+    }
+
     public void end() {
         // Calculate final score
         float playerdistx = player.getPosition().x - goal.getPosition().x;

@@ -104,6 +104,7 @@ public class GameThread extends Thread {
     public void setRunning(boolean running){
         this.running = running;
     }
+    public void setLaunched(boolean launched) { this.launched = launched; }
     public boolean getPaused(){
         return paused;
     }
