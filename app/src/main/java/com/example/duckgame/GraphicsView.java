@@ -73,6 +73,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         sprites.put(R.drawable.whirlpool,  BitmapFactory.decodeResource(getResources(),R.drawable.whirlpool));
         sprites.put(R.drawable.oil,  BitmapFactory.decodeResource(getResources(),R.drawable.oil));
         sprites.put(R.drawable.boat,  BitmapFactory.decodeResource(getResources(),R.drawable.boat));
+        sprites.put(R.drawable.launch_pad,  BitmapFactory.decodeResource(getResources(),R.drawable.launch_pad));
     }
 
     @Override
