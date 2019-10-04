@@ -59,6 +59,8 @@ public class GameWorld {
 
         Log.i("SCORE", ": " + score);
         gameThread.writeScore(score);
+
+        gameThread.endGame(score);
     }
 
     public void tick(double deltaTime) {

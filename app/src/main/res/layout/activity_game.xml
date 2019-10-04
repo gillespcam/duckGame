@@ -31,6 +31,14 @@
                 android:visibility="invisible"
                 app:srcCompat="@android:color/black" />
 
+            <TextView
+                android:id="@+id/ScoreDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textAppearance="@style/TitleText"
+                android:visibility="invisible" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

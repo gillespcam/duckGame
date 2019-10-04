@@ -2,11 +2,11 @@ package com.example.duckgame;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,7 @@ public class GameActivity extends AppCompatActivity {
     private GameThread game;
 
     private ImageView pauseOverlay;
+    private TextView scoreDisplay;
     private ImageButton buttonPause;
     private ImageButton buttonRestart;
     private ImageButton buttonBack;
@@ -29,8 +30,10 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         buttonPause = findViewById(R.id.ButtonPause);
+        scoreDisplay = findViewById(R.id.ScoreDisplay);
         buttonBack = findViewById(R.id.ButtonBack);
         pauseOverlay = findViewById(R.id.pauseOverlay);
+        buttonRestart = findViewById(R.id.buttonRestart);
         buttonRestart = findViewById(R.id.buttonRestart);
 
         // Enable Fullscreen
@@ -57,6 +60,21 @@ public class GameActivity extends AppCompatActivity {
         game = graphicsView.getGameThread();
         FrameLayout gameView = findViewById(R.id.GameView);
         gameView.addView(graphicsView);
+    }
+
+    public void endGame(int score){
+        class Disposer implements Runnable {
+            int score;
+            Disposer(int score) { this.score = score; }
+            public void run() {
+                onClickButtonPause(buttonPause);
+                scoreDisplay.setText(String.valueOf(score));
+                scoreDisplay.setVisibility(View.VISIBLE);
+            }
+        }
+
+        runOnUiThread(new Disposer(score));
+
     }
 
     public void onClickButtonPause(View view){

@@ -103,7 +103,7 @@ public class GameThread extends Thread {
         Set<String> set = persistentScores.getStringSet(key, new HashSet<String>());
         levelScores.addAll(set);
 
-        if (!levelScores.isEmpty()) {
+        if (levelScores.size() == 5) {
             for (int i = 0; i < levelScores.size(); i++) {
                 if (Integer.parseInt(levelScores.get(i)) < score) {
                     if (i < 1) levelScores.set(i + 4, levelScores.get(i + 3));
@@ -111,23 +111,20 @@ public class GameThread extends Thread {
                     if (i < 3) levelScores.set(i + 2, levelScores.get(i + 1));
                     if (i < 4) levelScores.set(i + 1, levelScores.get(i));
                     levelScores.set(0, String.valueOf(score));
-
-                    set = new HashSet<>();
-                    set.addAll(levelScores);
-                    scores.putStringSet(key, set);
                 }
             }
         }
-        else {
-            levelScores.add(String.valueOf(score));
-            set = new HashSet<>();
-            set.addAll(levelScores);
-            scores.putStringSet(key, set);
-        }
+        else levelScores.add(String.valueOf(score));
 
+        set = new HashSet<>();
+        set.addAll(levelScores);
+        scores.putStringSet(key, set);
         scores.apply();
     }
 
+    public void endGame(int score){
+        ((GameActivity)graphicsView.getContext()).endGame(score);
+    }
     public void pauseGame(){paused = true;}
     public void resumeGame(){paused = false;}
 
