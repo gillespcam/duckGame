@@ -19,6 +19,10 @@ public class Bonus extends GameObject implements CollisionCircle {
     public float getRadius(){ return scale / 2; }
 
     public boolean onCollision(){
+        parent.setBonuses(parent.getBonuses() + 1);
+        parent.removeObject(this);
+
+        // Own actions taken
         return false;
     }
 }

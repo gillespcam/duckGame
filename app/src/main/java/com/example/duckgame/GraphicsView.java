@@ -23,6 +23,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     private final float margin = 20F;
 
+    private Context context;
     private float screenWidth;
     private float screenHeight;
     private PointF offset = new PointF();
@@ -42,6 +43,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
 
     GraphicsView (Context context, LevelBlueprint levelBlueprint) {
         super(context);
+        this.context = context;
 
         getHolder().addCallback(this);
         game = new GameThread(getHolder(), this, levelBlueprint);
@@ -157,9 +159,9 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
     public boolean onTouchEvent(MotionEvent event){
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             Log.i(TAG, "DOWN");
-            // If we're not paused or launched, we can start the launch procedure
+            // If we're not paused or launched, we can start the launchPlayer procedure
             if(!game.getPaused() && !game.getLaunched()){
-                // no launch motion currently in progress
+                // no launchPlayer motion currently in progress
                 if(!launchInProgress) launchInProgress = true;
                 int pointer = event.findPointerIndex(0);
                 PointF aimPoint = new PointF(event.getX(pointer), event.getY(pointer));
@@ -169,7 +171,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             }
         } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
             Log.i(TAG, "MOVE" + event.getPointerCount());
-            // If we currently have a launch motion in progress
+            // If we currently have a launchPlayer motion in progress
             if(!game.getPaused() && launchInProgress){
                 int pointer = event.findPointerIndex(0);
                 PointF aimPoint = new PointF(event.getX(pointer), event.getY(pointer));
@@ -179,7 +181,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             }
         } else if(event.getAction() == MotionEvent.ACTION_UP) {
             Log.i(TAG, "UP" + event.getPointerCount());
-            // If we currently have a launch motion in progress
+            // If we currently have a launchPlayer motion in progress
             if(launchInProgress){
                 launchInProgress = false;
                 if(!game.getPaused()){
@@ -193,7 +195,7 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
             }
         } else if(event.getAction() == MotionEvent.ACTION_POINTER_UP) {
             Log.i(TAG, "POINTERUP" + event.getPointerCount());
-            // If we currently have a launch motion in progress
+            // If we currently have a launchPlayer motion in progress
             if(launchInProgress && (event.getActionIndex()) == 0){
                 launchInProgress = false;
                 if(!game.getPaused()){

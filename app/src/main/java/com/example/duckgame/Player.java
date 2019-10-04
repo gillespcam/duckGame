@@ -14,7 +14,7 @@ public class Player extends ActiveGameObject {
     private float mass = 1; // How much force affects the change in velocity of the player
     private float bounciness = 0.7F; // Fraction of speed the projectile conserves after a bounce collision
     private float friction = -0.9F; // Fraction of current velocity lost each tick
-    private float launchSpeed = 3F; // Initial launch speed multiplier
+    private float launchSpeed = 3F; // Initial launchPlayer speed multiplier
     private float stopLimit = 0.2F; // Speed the player has to be going under for the level to be considered finished
 
     private PointF force = new PointF(0, 0); // Net force acting on projectile
@@ -35,7 +35,7 @@ public class Player extends ActiveGameObject {
             /* After launching, if under stopLimit then
                halt collision and trajectory calculations */
             if(velocity.length() < stopLimit){
-                parent.playerStopped();
+                parent.end();
                 launched = false;
                 return;
             }
@@ -64,7 +64,7 @@ public class Player extends ActiveGameObject {
         launched = true;
     }
 
-    /** Private Methods **/
+    /** Helper Methods **/
 
     private void calculateTrajectory(double deltaTime){
         // Add friction force
@@ -122,8 +122,6 @@ public class Player extends ActiveGameObject {
         float yDist = position.y - objPos.y;
         float Dist = (float)Math.sqrt(xDist * xDist + yDist * yDist);
         float radSum = (scale / 2) + objRad;
-
-        Log.i(TAG + "/Collision", Dist + " > " + radSum);
 
         // If the player is too far away to collide, we do nothing
         if (Dist > radSum) return;

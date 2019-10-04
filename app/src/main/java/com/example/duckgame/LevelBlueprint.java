@@ -16,17 +16,19 @@ public class LevelBlueprint {
     private final String TAG = "LevelBlueprint";
 
     private GameWorld level;
-    private PointF size = new PointF(1,1);
+
+    private int levelID;
+    private PointF levelSize;
 
     LevelBlueprint(Context context, int levelID, TypedArray levelData) {
+        this.levelID = levelID;
 
         // Get levelSize to instantiate model GameWorld
         TypedArray levelSize = context.getResources().obtainTypedArray(levelData.getResourceId(0, 0));
-        size.x = levelSize.getFloat(0, 0F);
-        size.y = levelSize.getFloat(1, 0F);
+        this.levelSize = new PointF(levelSize.getFloat(0, 0F), levelSize.getFloat(1, 0F));
         levelSize.recycle();
 
-        level = new GameWorld(size);
+        level = new GameWorld(this.levelSize);
 
         TypedArray levelObjects = context.getResources().obtainTypedArray(levelData.getResourceId(1, 0));
         String[] types = context.getResources().getStringArray(levelObjects.getResourceId(0,0));
@@ -84,7 +86,8 @@ public class LevelBlueprint {
 
     /** Properties **/
 
+    public int getLevelID() { return levelID; }
     public PointF getSize(){
-        return level.getSize();
+        return levelSize;
     }
 }

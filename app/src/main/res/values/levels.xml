@@ -41,23 +41,33 @@
         <item>Player</item>
         <item>Goal</item>
         <item>Wall</item>
+        <item>Bonus</item>
+        <item>Bonus</item>
     </string-array>
     <array name="level_0_sprites">
         <item>@drawable/player</item>
         <item>@drawable/goal</item>
         <item>@drawable/goal</item>
+        <item>@drawable/bonus</item>
+        <item>@drawable/bonus</item>
     </array>
     <array name="level_0_x_positions">
         <item>2</item>
         <item>14</item>
+        <item>8</item>
+        <item>8</item>
         <item>8</item>
     </array>
     <array name="level_0_y_positions">
         <item>4</item>
         <item>4</item>
         <item>4</item>
+        <item>2</item>
+        <item>6</item>
     </array>
     <array name="level_0_rotations">
+        <item>0</item>
+        <item>0</item>
         <item>0</item>
         <item>0</item>
         <item>0</item>
@@ -66,6 +76,8 @@
         <item>1</item>
         <item>1</item>
         <item>1</item>
+        <item>0.5</item>
+        <item>0.5</item>
     </array>
     <array name="level_0_objects">
         <item>@array/level_0_types</item>
