@@ -68,6 +68,7 @@ public class GameActivity extends AppCompatActivity {
             Disposer(int score) { this.score = score; }
             public void run() {
                 onClickButtonPause(buttonPause);
+                buttonPause.setVisibility(View.GONE);
                 scoreDisplay.setText(String.valueOf(score));
                 scoreDisplay.setVisibility(View.VISIBLE);
             }
