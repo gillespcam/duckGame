@@ -1,6 +1,8 @@
 package com.example.duckgame;
 
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LevelsActivity extends AppCompatActivity {
 
     private final String TAG = "LevelsActivity";
+
+    private SoundPool menuSounds;
+    private int tapSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class LevelsActivity extends AppCompatActivity {
         OnItemClickListener onItemClickListener = new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int i, long l) {
+                menuSounds.play(tapSound, 1.0f, 1.0f, 0, 0, 1);
                 Intent intent = new Intent(parent.getContext(), GameActivity.class);
                 intent.putExtra("id", i);
                 startActivity(intent);
@@ -47,10 +53,17 @@ public class LevelsActivity extends AppCompatActivity {
             }
         };
 
+        menuSounds = new SoundPool.Builder().setAudioAttributes(new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build()).setMaxStreams(4).build();
+        tapSound = menuSounds.load(this, R.raw.quack, 1);
+
         LevelList.setOnItemClickListener(onItemClickListener);
     }
 
     public void onClickButtonBack(View view) {
+        menuSounds.play(tapSound, 1.0f, 1.0f, 0, 0, 1);
         finish();
         overridePendingTransition(0, 0);
     }
