@@ -13,6 +13,7 @@
         <item>"4. It's a slippery slope from here"</item>
         <item>"5. What a-boat this one?"</item>
         <item>"6. Slick as a duck's back"</item>
+        <item>"7. Let's get this bread"</item>
     </string-array>
     <array name="levels">
         <item>@array/level_0</item>
@@ -21,6 +22,7 @@
         <item>@array/level_3</item>
         <item>@array/level_4</item>
         <item>@array/level_5</item>
+        <item>@array/level_6</item>
     </array>
 
     <!-- LEVEL DATA -->
@@ -535,6 +537,134 @@
     <array name="level_5">
         <item>@array/level_5_size</item>
         <item>@array/level_5_objects</item>
+    </array>
+
+
+    <!-- LEVEL 6 -->
+
+    <array name="level_6_size">
+        <item>16</item>
+        <item>12</item>
+    </array>
+    <string-array name="level_6_types">
+        <item>Player</item>
+        <item>Goal</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Launchpad</item>
+        <item>Launchpad</item>
+        <item>Bonus</item>
+        <item>Bonus</item>
+    </string-array>
+    <array name="level_6_sprites">
+        <item>@drawable/player</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/launch_pad</item>
+        <item>@drawable/launch_pad</item>
+        <item>@drawable/bonus</item>
+        <item>@drawable/bonus</item>
+    </array>
+    <array name="level_6_x_positions">
+        <item>1</item>
+        <item>15</item>
+        <item>1</item>
+        <item>3</item>
+        <item>5</item>
+        <item>7</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>13</item>
+        <item>15</item>
+        <item>9</item>
+        <item>12</item>
+        <item>2</item>
+        <item>15</item>
+        <item>9</item>
+    </array>
+    <array name="level_6_y_positions">
+        <item>1</item>
+        <item>11</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>9</item>
+        <item>9</item>
+        <item>9</item>
+        <item>9</item>
+        <item>9</item>
+        <item>4</item>
+        <item>11</item>
+        <item>4</item>
+        <item>7</item>
+    </array>
+    <array name="level_6_rotations">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </array>
+    <array name="level_6_scales">
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>1</item>
+        <item>1</item>
+        <item>0.5</item>
+        <item>0.5</item>
+    </array>
+    <array name="level_6_objects">
+        <item>@array/level_6_types</item>
+        <item>@array/level_6_sprites</item>
+        <item>@array/level_6_x_positions</item>
+        <item>@array/level_6_y_positions</item>
+        <item>@array/level_6_rotations</item>
+        <item>@array/level_6_scales</item>
+    </array>
+    <array name="level_6">
+        <item>@array/level_6_size</item>
+        <item>@array/level_6_objects</item>
     </array>
 
 </resources>
