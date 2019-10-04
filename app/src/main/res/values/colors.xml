@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorWater">#2196F3</color>
-    <color name="colorShade">#186EAF</color>
-    <color name="colorGrass">#008763</color>
-    <color name="colorGeneral">#000000</color>
+    <color name="Water">#2196F3</color>
+    <color name="Shade">#186EAF</color>
+    <color name="Grass">#008763</color>
+
+    <color name="White">#FFFFFF</color>
+    <color name="Silver">#d3d3d3</color>
+    <color name="Black">#000000</color>
 </resources>

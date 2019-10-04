@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Duck Game</string>
+
+    <string name="activity_levels_title">Level Select</string>
 </resources>

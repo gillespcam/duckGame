@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/levels"
-        android:background="@color/colorWater">
+        android:background="@color/Water">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,8 +23,16 @@
                 android:layout_weight="5"
                 android:orientation="horizontal">
 
-                <Space
+                <TextView
+                    style="@style/TitleText"
                     android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:text="@string/activity_levels_title" />
+
+                <Space
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
@@ -43,7 +51,8 @@
                 android:id="@+id/LevelList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:divider="@drawable/level_list_divider" />
         </LinearLayout>
 
     </FrameLayout>

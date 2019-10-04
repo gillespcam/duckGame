@@ -35,5 +35,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickButtonScores(View view){
+        Intent intent = new Intent(this, ScoresActivity.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 }

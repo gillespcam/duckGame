@@ -33,7 +33,7 @@ public class LevelsActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         String[] levelNames = getResources().getStringArray(R.array.level_names);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, levelNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.level_list_item, levelNames);
         ListView LevelList = findViewById(R.id.LevelList);
         LevelList.setAdapter(adapter);
 

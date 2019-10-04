@@ -57,13 +57,13 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback 
         spritePaint.setDither(true);
 
         grassPaint = new Paint();
-        grassPaint.setColor(ContextCompat.getColor(context, R.color.colorGrass));
+        grassPaint.setColor(ContextCompat.getColor(context, R.color.Grass));
 
         shadePaint = new Paint();
-        shadePaint.setColor(ContextCompat.getColor(context, R.color.colorShade));
+        shadePaint.setColor(ContextCompat.getColor(context, R.color.Shade));
 
         waterPaint = new Paint();
-        waterPaint.setColor(ContextCompat.getColor(context, R.color.colorWater));
+        waterPaint.setColor(ContextCompat.getColor(context, R.color.Water));
 
         // Load all the resources we'll need to be drawing
         sprites = new SparseArray<>();
