@@ -7,11 +7,12 @@
          "level_names" array, and a reference in the "levels" array. -->
 
     <string-array name="level_names">
-        <item>"1: Wall you beat this level?"</item>
-        <item>"2: You're bounce to get this one"</item>
-        <item>"3: This one's a Whirly Good Time"</item>
-        <item>"4: It's a slippery slope from here"</item>
-        <item>"5: What a-boat this one?"</item>
+        <item>"1. Wall you beat this level?"</item>
+        <item>"2. You're bounce to get this one"</item>
+        <item>"3. This one's a Whirly Good Time"</item>
+        <item>"4. It's a slippery slope from here"</item>
+        <item>"5. What a-boat this one?"</item>
+        <item>"6. Testing"</item>
     </string-array>
     <array name="levels">
         <item>@array/level_0</item>
@@ -19,6 +20,7 @@
         <item>@array/level_2</item>
         <item>@array/level_3</item>
         <item>@array/level_4</item>
+        <item>@array/level_5</item>
     </array>
 
     <!-- LEVEL DATA -->
@@ -418,6 +420,109 @@
     <array name="level_4">
         <item>@array/level_4_size</item>
         <item>@array/level_4_objects</item>
+    </array>
+
+    <!-- LEVEL 5 -->
+
+    <array name="level_5_size">
+        <item>20</item>
+        <item>20</item>
+    </array>
+    <string-array name="level_5_types">
+        <item>Player</item>
+        <item>Goal</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Wall</item>
+        <item>Oil</item>
+        <item>Oil</item>
+        <item>Boat</item>
+        <item>Boat</item>
+        <item>Oil</item>
+    </string-array>
+    <array name="level_5_sprites">
+        <item>@drawable/player</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/goal</item>
+        <item>@drawable/oil</item>
+        <item>@drawable/oil</item>
+        <item>@drawable/boat</item>
+        <item>@drawable/boat</item>
+        <item>@drawable/oil</item>
+    </array>
+    <array name="level_5_x_positions">
+        <item>13</item>
+        <item>18</item>
+        <item>18</item>
+        <item>14</item>
+        <item>10</item>
+        <item>9</item>
+        <item>9</item>
+        <item>3</item>
+        <item>8</item>
+        <item>6</item>
+        <item>6</item>
+        <item>9</item>
+    </array>
+    <array name="level_5_y_positions">
+        <item>12</item>
+        <item>4</item>
+        <item>8</item>
+        <item>8</item>
+        <item>8</item>
+        <item>12</item>
+        <item>8</item>
+        <item>12</item>
+        <item>3</item>
+        <item>20</item>
+        <item>0</item>
+        <item>17</item>
+    </array>
+    <array name="level_5_rotations">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>270</item>
+        <item>90</item>
+        <item>0</item>
+    </array>
+    <array name="level_5_scales">
+        <item>1</item>
+        <item>1</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>4</item>
+        <item>1</item>
+        <item>1</item>
+        <item>4</item>
+    </array>
+    <array name="level_5_objects">
+        <item>@array/level_5_types</item>
+        <item>@array/level_5_sprites</item>
+        <item>@array/level_5_x_positions</item>
+        <item>@array/level_5_y_positions</item>
+        <item>@array/level_5_rotations</item>
+        <item>@array/level_5_scales</item>
+    </array>
+    <array name="level_5">
+        <item>@array/level_5_size</item>
+        <item>@array/level_5_objects</item>
     </array>
 
 </resources>
