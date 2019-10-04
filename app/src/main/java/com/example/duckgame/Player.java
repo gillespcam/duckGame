@@ -123,6 +123,8 @@ public class Player extends ActiveGameObject {
         float Dist = (float)Math.sqrt(xDist * xDist + yDist * yDist);
         float radSum = (scale / 2) + objRad;
 
+        // Log.i(TAG + "/Collision", Dist + " > " + radSum);
+
         // If the player is too far away to collide, we do nothing
         if (Dist > radSum) return;
 
@@ -130,16 +132,31 @@ public class Player extends ActiveGameObject {
 
         // Does player reflect upon collision with this object?
         if (obj.onCollision()) {
-            // Angle of velocity from center of player
-            float velAngle = (float)Math.atan2(velocity.y, velocity.x);
-            // Angle from ball to object: normal to plane of reflection
-            float normAngle = (float)Math.atan2(yDist, xDist);
-            // Calculate reflected angle
-            float newAngle = 2*normAngle - velAngle;
-            // Calculate reflected velocity
-            float speed = (float)Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
-            velocity.x = speed * bounciness * (float)Math.cos(newAngle);
-            velocity.y = speed * bounciness * (float)Math.sin(newAngle);
+            // Angle from object to point: normal to plane of reflection
+            double normAngle = Math.atan2(position.y - objPos.y,  position.x - objPos.x);
+
+            // move the point to the outer edge of the circle
+            position.x = objPos.x + (float)Math.cos(normAngle) * radSum;
+            position.y = objPos.y + (float)Math.sin(normAngle) * radSum;
+
+            float normvectx = position.x - objPos.x;
+            float normvecty = position.y - objPos.y;
+
+            //normalise
+            float normvectSize = (float)Math.sqrt(normvectx * normvectx + normvecty * normvecty);
+            normvectx /= normvectSize;
+            normvecty /= normvectSize;
+
+            // dot product to get size of perpendicular vector
+            float normVelSize = velocity.x * normvectx + velocity.y * normvecty;
+            float normVelx = normVelSize * normvectx;
+            float normVely = normVelSize * normvecty;
+
+            velocity.x -= 2 * normVelx;
+            velocity.y -= 2 * normVely;
+
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
         }
     }
 
@@ -147,13 +164,13 @@ public class Player extends ActiveGameObject {
         PointF objPos = obj.getPosition();
         float objWidth = obj.getWidth();
         float objHeight = obj.getHeight();
-        float xdist = Math.abs(this.position.x - objPos.x);
-        float ydist = Math.abs(this.position.y - objPos.y);
+        float xDist = Math.abs(this.position.x - objPos.x);
+        float yDist = Math.abs(this.position.y - objPos.y);
 
         // If the player is too far away to collide, we do nothing
-        if(xdist  > (objWidth + scale) / 2 || ydist  > (objHeight + scale) / 2 ) return;
+        if(xDist  > (objWidth + scale) / 2 || yDist  > (objHeight + scale) / 2 ) return;
 
-        Log.i(TAG + "/Collision", "Rectangle");
+        // Log.i(TAG + "/Collision", "Rectangle");
 
         // Does player reflect upon collision with this object?
         if(obj.onCollision()){
@@ -161,28 +178,28 @@ public class Player extends ActiveGameObject {
             float diagGrad = objHeight / objWidth;
             // Edge collisions, where the player is away from the corners
             // Top edge
-            if(xdist <= objWidth / 2 && position.y > objPos.y + xdist * diagGrad) {
+            if(xDist <= objWidth / 2 && position.y > objPos.y + xDist * diagGrad) {
                 position.y = objPos.y + (objHeight + scale )/ 2;
                 velocity.y = Math.abs(velocity.y);
                 velocity.x *= bounciness;
                 velocity.y *= bounciness;
                 return; }
             // Bottom edge
-            if(xdist <= objWidth / 2 && position.y < objPos.y - xdist * diagGrad) {
+            if(xDist <= objWidth / 2 && position.y < objPos.y - xDist * diagGrad) {
                 position.y = objPos.y - (objHeight + scale )/ 2;
                 velocity.y = -Math.abs(velocity.y);
                 velocity.x *= bounciness;
                 velocity.y *= bounciness;
                 return; }
             // Right edge
-            if(ydist <= objHeight / 2 && position.x > objPos.x + ydist / diagGrad) {
+            if(yDist <= objHeight / 2 && position.x > objPos.x + yDist / diagGrad) {
                 position.x = objPos.x + (objWidth + scale )/ 2;
                 velocity.x = Math.abs(velocity.y);
                 velocity.x *= bounciness;
                 velocity.y *= bounciness;
                 return; }
             // Left edge
-            if(ydist <= objHeight / 2 && position.x < objPos.x - ydist / diagGrad) {
+            if(yDist <= objHeight / 2 && position.x < objPos.x - yDist / diagGrad) {
                 position.x = objPos.x - (objWidth + scale )/ 2;
                 velocity.x = -Math.abs(velocity.x);
                 velocity.x *= bounciness;
@@ -190,7 +207,58 @@ public class Player extends ActiveGameObject {
                 return; }
 
             // TODO: Corners
-            //...
+
+
+
+            PointF corner = new PointF(0,0);
+
+            if(position.y < objPos.y - objHeight / 2 && position.x < objPos.x - objWidth / 2 ) {
+                corner.x = objPos.x - objWidth / 2;
+                corner.y = objPos.y - objHeight / 2;
+            }else if(position.y < objPos.y - objHeight / 2 && position.x > objPos.x + objWidth / 2 ) {
+                corner.x = objPos.x + objWidth / 2;
+                corner.y = objPos.y - objHeight / 2;
+            } else if(position.y > objPos.y + objHeight / 2 && position.x < objPos.x - objWidth / 2) {
+                corner.x = objPos.x - objWidth / 2;
+                corner.y = objPos.y + objHeight / 2;
+            } else if(position.y > objPos.y + objHeight / 2 && position.x > objPos.x + objWidth / 2 ) {
+                corner.x = objPos.x + objWidth / 2;
+                corner.y = objPos.y + objHeight / 2;
+            }
+
+            float cxdistsq = (float)Math.pow(corner.x - position.x, 2);
+            float cydistsq = (float)Math.pow(corner.y - position.y, 2);
+
+            // if we're outside the radius of the circle around the corner, do nothing
+            if (cydistsq + cxdistsq > (scale / 2) * (scale / 2)) return;
+
+            // now we just do circle collision around this corner point
+
+            // Angle from object to point: normal to plane of reflection
+            double normAngle = Math.atan2(position.y - corner.y,  position.x - corner.x);
+
+            // move the point to the outer edge of the circle
+            position.x = corner.x + (float)Math.cos(normAngle) * scale / 2;
+            position.y = corner.y + (float)Math.sin(normAngle) * scale / 2;
+
+            float normvectx = position.x - corner.x;
+            float normvecty = position.y - corner.y;
+
+            //normalise
+            float normvectSize = (float)Math.sqrt(normvectx * normvectx + normvecty * normvecty);
+            normvectx /= normvectSize;
+            normvecty /= normvectSize;
+
+            // dot product to get size of perpendicular vector
+            float normVelSize = velocity.x * normvectx + velocity.y * normvecty;
+            float normVelx = normVelSize * normvectx;
+            float normVely = normVelSize * normvecty;
+
+            velocity.x -= 2 * normVelx;
+            velocity.y -= 2 * normVely;
+
+            velocity.x *= bounciness;
+            velocity.y *= bounciness;
         }
     }
 
