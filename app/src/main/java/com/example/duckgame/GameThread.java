@@ -7,6 +7,15 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.view.SurfaceHolder;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 public class GameThread extends Thread {
 
     private static final String TAG = "GameThread";
@@ -14,8 +23,6 @@ public class GameThread extends Thread {
     private final double TICKRATE = 60; // Amount of times the game updates each second
     private final double TIME_PER_TICK = 1000000000 / TICKRATE; // Amount of time between each update tick in nanoseconds
     private final int MAX_FRAMESKIP = 10; // Maximum number of times for the game to skip drawing
-
-    SharedPreferences highScores; // Dictionary of high scores for each level that remains between launches
 
     private SurfaceHolder surfaceHolder;
     private GraphicsView graphicsView;
@@ -40,9 +47,6 @@ public class GameThread extends Thread {
         // Setup new world to be run
         world.setGameThread(this);
         graphicsView.setGameWorld(world);
-
-        // Get high scores
-        highScores = graphicsView.getContext().getSharedPreferences("highScores", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -90,10 +94,38 @@ public class GameThread extends Thread {
     }
 
     public void writeScore(int score){
-        Editor scores = highScores.edit();
+        SharedPreferences persistentScores = graphicsView.getContext().getSharedPreferences("highScores", Context.MODE_PRIVATE);
+        Editor scores = persistentScores.edit();
+
         String key = String.valueOf(levelBlueprint.getLevelID());
-        if (score > highScores.getInt(key, 0)) scores.putInt(key, score);
-        scores.commit();
+        ArrayList<String> levelScores = new ArrayList<>();
+
+        Set<String> set = persistentScores.getStringSet(key, new HashSet<String>());
+        levelScores.addAll(set);
+
+        if (!levelScores.isEmpty()) {
+            for (int i = 0; i < levelScores.size(); i++) {
+                if (Integer.parseInt(levelScores.get(i)) < score) {
+                    if (i < 1) levelScores.set(i + 4, levelScores.get(i + 3));
+                    if (i < 2) levelScores.set(i + 3, levelScores.get(i + 2));
+                    if (i < 3) levelScores.set(i + 2, levelScores.get(i + 1));
+                    if (i < 4) levelScores.set(i + 1, levelScores.get(i));
+                    levelScores.set(0, String.valueOf(score));
+
+                    set = new HashSet<>();
+                    set.addAll(levelScores);
+                    scores.putStringSet(key, set);
+                }
+            }
+        }
+        else {
+            levelScores.add(String.valueOf(score));
+            set = new HashSet<>();
+            set.addAll(levelScores);
+            scores.putStringSet(key, set);
+        }
+
+        scores.apply();
     }
 
     public void pauseGame(){paused = true;}

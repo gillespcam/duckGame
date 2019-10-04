@@ -19,7 +19,12 @@
     <style name="ItemText" parent="@style/TextAppearance.AppCompat.Medium">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/White</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">sans</item>
+    </style>
+
+    <style name="ScoresText" parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/Silver</item>
         <item name="android:typeface">sans</item>
     </style>
 

@@ -71,6 +71,7 @@ public class LevelBlueprint {
             }
         }
         levelObjects.recycle();
+        sprites.recycle();
         xPositions.recycle();
         yPositions.recycle();
         rotations.recycle();
