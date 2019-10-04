@@ -2,6 +2,7 @@ package com.example.duckgame;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -19,7 +20,9 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageView pauseOverlay;
     private ImageButton buttonPause;
+    private ImageButton buttonRestart;
     private ImageButton buttonBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class GameActivity extends AppCompatActivity {
         buttonPause = findViewById(R.id.ButtonPause);
         buttonBack = findViewById(R.id.ButtonBack);
         pauseOverlay = findViewById(R.id.pauseOverlay);
+        buttonRestart = findViewById(R.id.buttonRestart);
 
         // Enable Fullscreen
         ActionBar actionBar = getSupportActionBar();
@@ -60,12 +64,14 @@ public class GameActivity extends AppCompatActivity {
             game.pauseGame();
             pauseOverlay.setVisibility(View.VISIBLE);
             buttonPause.setImageResource(R.drawable.button_resume);
+            buttonRestart.setVisibility(View.VISIBLE);
             buttonBack.setVisibility(View.VISIBLE);
         }
         else {
             game.resumeGame();
             pauseOverlay.setVisibility(View.INVISIBLE);
             buttonPause.setImageResource(R.drawable.button_pause);
+            buttonRestart.setVisibility(View.GONE);
             buttonBack.setVisibility(View.GONE);
         }
     }
@@ -73,6 +79,10 @@ public class GameActivity extends AppCompatActivity {
     public void onClickButtonBack(View view){
         finish();
         overridePendingTransition(0, 0);
+    }
+
+    public void onClickButtonRestart(View view){
+        recreate();
     }
 
     @Override
