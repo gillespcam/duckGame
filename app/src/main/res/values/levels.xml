@@ -12,7 +12,7 @@
         <item>"3. This one's a Whirly Good Time"</item>
         <item>"4. It's a slippery slope from here"</item>
         <item>"5. What a-boat this one?"</item>
-        <item>"6. Testing"</item>
+        <item>"6. Slick as a duck's back"</item>
     </string-array>
     <array name="levels">
         <item>@array/level_0</item>
@@ -441,6 +441,8 @@
         <item>Boat</item>
         <item>Boat</item>
         <item>Oil</item>
+        <item>Bonus</item>
+        <item>Bonus</item>
     </string-array>
     <array name="level_5_sprites">
         <item>@drawable/player</item>
@@ -455,9 +457,11 @@
         <item>@drawable/boat</item>
         <item>@drawable/boat</item>
         <item>@drawable/oil</item>
+        <item>@drawable/bonus</item>
+        <item>@drawable/bonus</item>
     </array>
     <array name="level_5_x_positions">
-        <item>13</item>
+        <item>16</item>
         <item>18</item>
         <item>18</item>
         <item>14</item>
@@ -468,6 +472,8 @@
         <item>8</item>
         <item>6</item>
         <item>6</item>
+        <item>9</item>
+        <item>9</item>
         <item>9</item>
     </array>
     <array name="level_5_y_positions">
@@ -483,6 +489,8 @@
         <item>20</item>
         <item>0</item>
         <item>17</item>
+        <item>17</item>
+        <item>2</item>
     </array>
     <array name="level_5_rotations">
         <item>0</item>
@@ -496,6 +504,8 @@
         <item>0</item>
         <item>270</item>
         <item>90</item>
+        <item>0</item>
+        <item>0</item>
         <item>0</item>
     </array>
     <array name="level_5_scales">
@@ -511,6 +521,8 @@
         <item>1</item>
         <item>1</item>
         <item>4</item>
+        <item>0.5</item>
+        <item>0.5</item>
     </array>
     <array name="level_5_objects">
         <item>@array/level_5_types</item>
