@@ -102,7 +102,6 @@ public class GameActivity extends AppCompatActivity {
 
     public void onClickButtonRestart(View view){
         recreate();
-        overridePendingTransition(0, 0);
     }
 
     @Override

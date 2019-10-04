@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -114,7 +115,10 @@ public class GameThread extends Thread {
                 }
             }
         }
-        else levelScores.add(String.valueOf(score));
+        else {
+            levelScores.add(String.valueOf(score));
+            Collections.sort(levelScores);
+        }
 
         set = new HashSet<>();
         set.addAll(levelScores);
