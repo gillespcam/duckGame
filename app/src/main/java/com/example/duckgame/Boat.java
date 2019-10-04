@@ -10,14 +10,12 @@ public class Boat extends ActiveGameObject implements CollisionRectangle {
 
     private final float SPAN = 8F; // Distance the boat travels one-way
     private final int ROUND_TRIP = 360; // Amount of ticks it takes to complete a round trip
-    private final int COLLISION_COOLDOWN = 60; // Amount of ticks before player can collide with this object again
 
     private int tock = 0;
 
     private boolean reverse = false; // If the boat is travel towards or away from home
     private PointF homePosition; // Initial position of this object
     private double homeBearing; // Initial rotation in radians
-    private int cooldown = 0; // Amount of ticks left before collision is enabled again
 
     public Boat(GameWorld parent, int sprite, PointF position, float rotation, float scale) {
         super(parent, sprite, position, rotation, scale);
@@ -43,7 +41,6 @@ public class Boat extends ActiveGameObject implements CollisionRectangle {
             reverse = !reverse;
         }
 
-        if (cooldown > 0) cooldown--;
     }
 
     /** CollisionRectangle **/
@@ -55,12 +52,6 @@ public class Boat extends ActiveGameObject implements CollisionRectangle {
 
     @Override
     public boolean onCollision(){
-
-        // Actions taken by player
-        if (cooldown == 0) {
-            cooldown = COLLISION_COOLDOWN;
-            return true;
-        }
-        else return false;
+        return true;
     }
 }
